@@ -38,7 +38,7 @@ function createMainWindow(): BrowserWindow {
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
     });
-    win.loadURL('http://localhost:4200/detail');
+    win.loadURL('http://localhost:4200/login');
     
     ipcMain.on('login-success', () => {
       win.loadURL('http://localhost:4200')

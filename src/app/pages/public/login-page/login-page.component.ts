@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ElectronService } from '../../../core/services';
 
 @Component({
   selector: 'app-login-page',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private core: ElectronService) { }
 
   ngOnInit(): void {
+  }
+
+  login() {
+    this.core.ipcRenderer.send('login-success')
   }
 
 }

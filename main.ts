@@ -10,13 +10,19 @@ function createWindow(): BrowserWindow {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
+  const width = size.width / 2.5;
+	const height = size.height / 1.875;
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+		x: (size.width / 2) - (width / 2),
+		y: (size.height / 2) - (height / 2),
+		width: width,
+		height: height,
+		'minWidth': 400,
+		'minHeight': 300,
+    frame: false,
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,

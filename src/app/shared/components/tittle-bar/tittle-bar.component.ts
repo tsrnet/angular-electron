@@ -7,23 +7,29 @@ import { ElectronService } from '../../../core/services';
   styleUrls: ['./tittle-bar.component.scss']
 })
 export class TittleBarComponent implements OnInit {
-  
+
   private window: Electron.BrowserWindow;
   @ViewChild("tittlebar", {static:true}) child: ElementRef;
+  resizable: boolean = true;
   
   constructor(private electron: ElectronService) {
-    this.window = this.electron.remote.getCurrentWindow();
+    if (this.electron.isElectron) {
+      this.window = this.electron.remote.getCurrentWindow();
+      this.resizable = this.window.resizable;
+    } 
+    // this.window.setSize(380, 480);
   }
 
   ngOnInit(): void {
   }
-
+  
   click() {
-    this.child.nativeElement.classList.remove('dark');
+    // this.child.nativeElement.classList.remove('dark');
   }
-
+  
   public minimize() {
-		this.window.minimize();
+    this.window.minimize();
+    // this.electron.ipcRenderer.send('login-success');
 	}
 
 	public maximize() {

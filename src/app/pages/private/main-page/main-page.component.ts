@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ElectronService } from '../../../core/services';
 
 @Component({
   selector: 'app-main-page',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private core: ElectronService) {
+    let window = this.core.remote.getCurrentWindow();
+    window.setSize(this.core.screen.width/2.5, this.core.screen.height/1.875);
+    window.setResizable(true);
+  }
 
   ngOnInit(): void {
   }

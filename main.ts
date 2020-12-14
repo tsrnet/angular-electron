@@ -10,17 +10,20 @@ function createMainWindow(): BrowserWindow {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-  const width = size.width / 2.5;
-	const height = size.height / 1.875;
+  const width = 380;
+	const height = 520;
+  const widthFinal = size.width / 2.5;
+	const heightFinal = size.height / 1.875;
 
   // Create the browser window.
   win = new BrowserWindow({
 		x: (size.width / 2) - (width / 2),
 		y: (size.height / 2) - (height / 2),
-		width: width,
+    width: width,
+    resizable: false,
 		height: height,
-		'minWidth': 400,
-		'minHeight': 300,
+		'minWidth': 300,
+		'minHeight': 400,
     frame: false,
     titleBarStyle: 'hiddenInset',
     webPreferences: {
@@ -43,8 +46,6 @@ function createMainWindow(): BrowserWindow {
     ipcMain.on('login-success', () => {
       win.loadURL('http://localhost:4200')
     })
-
-    // win.loadURL('http://localhost:4200');
 
   } else {
     win.loadURL(url.format({

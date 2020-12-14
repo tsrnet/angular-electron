@@ -15,10 +15,14 @@ export class ElectronService {
   remote: typeof remote;
   childProcess: typeof childProcess;
   fs: typeof fs;
-  screen;
+  screen: any;
 
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
+  }
+
+  get currentWindow(): Electron.BrowserWindow {
+    return (this.isElectron) ? this.remote.getCurrentWindow() : null;
   }
 
   constructor() {

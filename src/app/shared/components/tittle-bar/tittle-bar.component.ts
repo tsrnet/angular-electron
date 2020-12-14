@@ -8,16 +8,12 @@ import { ElectronService } from '../../../core/services';
 })
 export class TittleBarComponent implements OnInit {
 
-  private window: Electron.BrowserWindow;
   @ViewChild("tittlebar", {static:true}) child: ElementRef;
-  resizable: boolean = true;
   
-  constructor(private electron: ElectronService) {
-    if (this.electron.isElectron) {
-      this.window = this.electron.remote.getCurrentWindow();
-      this.resizable = this.window.resizable;
-    } 
-    // this.window.setSize(380, 480);
+  constructor(private core: ElectronService) {}
+
+  public get canMaximize(): boolean {
+    return (this.core.isElectron) ? this.core.currentWindow.resizable : true;
   }
 
   ngOnInit(): void {
@@ -28,17 +24,17 @@ export class TittleBarComponent implements OnInit {
   }
   
   public minimize() {
-    this.window.minimize();
-    // this.electron.ipcRenderer.send('login-success');
+    this.core.currentWindow.minimize();
+    // this.core.ipcRenderer.send('login-success');
 	}
 
 	public maximize() {
-		if (this.window.isMaximized()) this.window.unmaximize();
-		else this.window.maximize();
+		if (this.core.currentWindow.isMaximized()) this.core.currentWindow.unmaximize();
+		else this.core.currentWindow.maximize();
 	}
 
 	public close() {
-		this.window.close();
-	}
+		this.core.currentWindow.close();
+  }
 
 }

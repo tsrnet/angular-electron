@@ -14,7 +14,39 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    this.core.ipcRenderer.send('login-success')
+
+
+    this.core.authService.signIn('antoniodavidorado@gmail.com', '$%p21012864D').then(
+    (res: boolean) => {
+      console.log(res);
+    }, (err: any) => {
+      console.warn(err);
+    })
+    //this.core.ipcRenderer.send('login-success')
+
+  }
+
+  logout() {
+
+
+    this.core.authService.signOut().then(
+    (res: boolean) => {
+      console.log(res);
+    }, (err: any) => {
+      console.warn(err);
+    })
+    //this.core.ipcRenderer.send('login-success')
+
+  }
+
+  status() {
+
+    this.core.authService.signedIn.subscribe((state) => {
+      console.log(state);
+    })
+
+    //this.core.ipcRenderer.send('login-success')
+
   }
 
 }

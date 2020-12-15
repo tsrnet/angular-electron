@@ -10,7 +10,9 @@
                 </div>
                 <input type="password" name="password" id="password">
             </div>
-            <button>Sign in</button>
+            <button (click)="this.login()">Log in</button>
+            <button (click)="this.logout()">Log out</button>
+            <button (click)="this.status()">Status</button>
         </form>
     </section>
     <section id="signin-suggestion">

@@ -15,6 +15,9 @@ import { AppComponent } from './app.component';
 import { LoginPageModule } from './pages/public/login-page/login-page.module';
 import { MainPageModule } from './pages/private/main-page/main-page.module';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from "@angular/fire/auth";
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -31,6 +34,17 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     LoginPageModule,
     MainPageModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyDS66SGVpdF9ctl-HwpFhRbJeXT-UtfJuM",
+      authDomain: "bloc-master.firebaseapp.com",
+      databaseURL: "https://bloc-master-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "bloc-master",
+      storageBucket: "bloc-master.appspot.com",
+      messagingSenderId: "631798343163",
+      appId: "1:631798343163:web:b66ab81f2f061f463e975e",
+      measurementId: "G-VRQJS5TB5B"
+    }),
+    AngularFireAuthModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -42,4 +56,4 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

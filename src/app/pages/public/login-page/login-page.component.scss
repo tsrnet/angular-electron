@@ -77,6 +77,17 @@ div.page-wrapper {
     }
 }
 
+div#spinner {
+    position: absolute;
+    top: 22px;
+    width: 100%;
+    height: calc(100% - 22px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8c8c8c41;
+}
+
 
 //THEMES
 
@@ -139,4 +150,8 @@ div.page-wrapper {
             color: #e6e6e6;
         }
     }
+}
+
+#spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #2DA183;
 }

@@ -2,12 +2,12 @@
     <section id="login-form">
         <form action="">
             <div>
-                <mat-form-field appearance="outline" color="primary">
+                <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
                     <input matInput [formControl]="email" required>
                     <mat-error *ngIf="email.invalid">{{this.emailErrorMessage}}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" color="primary">
+                <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
                     <input matInput [type]="this.isPasswordVisible ? 'text' : 'password'" [formControl]="password" required>
                     <mat-icon matSuffix (click)="this.togglePasswordVisibility()">{{this.isPasswordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -16,11 +16,14 @@
             </div>
             <div>
                 <mat-divider></mat-divider>
-                <button mat-stroked-button (click)="this.login()">Log in</button>
+                <button mat-stroked-button (click)="this.logIn()">Log in</button>
             </div>
         </form>
     </section>
     <section id="signin-suggestion">
         <button mat-stroked-button>Create Account</button>
     </section>
+</div>
+<div id="spinner" class="dark" *ngIf="this.showSpinner">
+    <mat-spinner></mat-spinner>
 </div>

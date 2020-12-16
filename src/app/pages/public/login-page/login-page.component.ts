@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ElectronService } from '../../../core/services';
+import { User } from '../../../interfaces/index';
 
 @Component({
 	selector: 'app-login-page',
@@ -12,6 +13,14 @@ export class LoginPageComponent {
 	email = new FormControl('', [Validators.required, Validators.email]);
 	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
 	isPasswordVisible: boolean = false;
+	showSpinner: boolean = false;
+
+	private get user(): User {
+		return {
+			email: this.email.value,
+			password: this.password.value
+		}
+	}
 
 	get emailErrorMessage(): string {
 		if (this.email.hasError('required')) {
@@ -33,32 +42,35 @@ export class LoginPageComponent {
 		this.isPasswordVisible = !this.isPasswordVisible;
 	}
 
-	login() {
-		return;
-		this.core.authService.signIn('antoniodavidorado@gmail.com', '$%p21012864D').then(
+	logIn() {
+		this.showSpinner = true;
+		this.core.authService.signIn(this.user.email, this.user.password).then(
 			(res: boolean) => {
-				console.log(res);
+				this.showSpinner = false;
+				if (res) this.core.ipcRenderer.send('login-success');
+				else console.log(res);
 			}, (err: any) => {
+				this.showSpinner = false;
 				console.warn(err);
-			})
-		//this.core.ipcRenderer.send('login-success')
+			}
+		)
 	}
 
-	logout() {
-		this.core.authService.signOut().then(
-			(res: boolean) => {
-				console.log(res);
-			}, (err: any) => {
-				console.warn(err);
-			})
-		//this.core.ipcRenderer.send('login-success')
-	}
+	// logout() {
+	// 	this.core.authService.signOut().then(
+	// 		(res: boolean) => {
+	// 			console.log(res);
+	// 		}, (err: any) => {
+	// 			console.warn(err);
+	// 		})
+	// 	//this.core.ipcRenderer.send('login-success')
+	// }
 
-	status() {
-		this.core.authService.signedIn.subscribe((state) => {
-			console.log(state);
-		})
-		//this.core.ipcRenderer.send('login-success')
-	}
+	// status() {
+	// 	this.core.authService.signedIn.subscribe((state) => {
+	// 		console.log(state);
+	// 	})
+	// 	//this.core.ipcRenderer.send('login-success')
+	// }
 
 }

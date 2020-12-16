@@ -44,7 +44,7 @@ function createMainWindow(): BrowserWindow {
     win.loadURL('http://localhost:4200/login');
     
     ipcMain.on('login-success', () => {
-      win.loadURL('http://localhost:4200')
+      win.loadURL('http://localhost:4200/main')
     })
 
   } else {

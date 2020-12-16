@@ -2,20 +2,25 @@
     <section id="login-form">
         <form action="">
             <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email">
-                <div>
-                    <label for="password">Password</label>
-                    <label for="password">Forgot password?</label>
-                </div>
-                <input type="password" name="password" id="password">
+                <mat-form-field appearance="outline" color="primary">
+                    <mat-label>Email</mat-label>
+                    <input matInput [formControl]="email" required>
+                    <mat-error *ngIf="email.invalid">{{this.emailErrorMessage}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="primary">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="this.isPasswordVisible ? 'text' : 'password'" [formControl]="password" required>
+                    <mat-icon matSuffix (click)="this.togglePasswordVisibility()">{{this.isPasswordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="password.invalid">{{this.passwordErrorMessage}}</mat-error>
+                </mat-form-field>
             </div>
-            <button (click)="this.login()">Log in</button>
-            <button (click)="this.logout()">Log out</button>
-            <button (click)="this.status()">Status</button>
+            <div>
+                <mat-divider></mat-divider>
+                <button mat-stroked-button (click)="this.login()">Log in</button>
+            </div>
         </form>
     </section>
     <section id="signin-suggestion">
-    
+        <button mat-stroked-button>Create Account</button>
     </section>
 </div>

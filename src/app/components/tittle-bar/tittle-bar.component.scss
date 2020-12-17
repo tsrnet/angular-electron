@@ -27,19 +27,8 @@
                 width: 28px;
                 height: 100%;
                 -webkit-app-region: no-drag;
+                cursor: pointer;
             }
-            
-            // #min-button {
-            //     grid-column: 1;
-            // }
-            
-            // #max-button {
-            //     grid-column: 2;
-            // }
-            
-            // #close-button {
-            //     grid-column: 3;
-            // }
         }
     }
 }
@@ -55,7 +44,6 @@
             }
         }
         #window-controls .button:hover {
-            cursor: pointer;
             background-color: #ffffff13;
             color: #fff;
         }
@@ -74,7 +62,6 @@
             }
         }
         #window-controls .button:hover {
-            cursor: pointer;
             background-color: #ffffff13;
             color: #fff;
         }

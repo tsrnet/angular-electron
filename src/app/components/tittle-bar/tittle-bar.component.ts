@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ElectronService } from '../../../core/services';
+import { ElectronService } from '../../services';
 
 @Component({
   selector: 'app-tittle-bar',

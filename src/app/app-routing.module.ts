@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginPageModule } from './pages/public/login-page/login-page.module';
-import { PageNotFoundComponent } from './shared/components';
 
 
 const routes: Routes = [
@@ -9,10 +8,6 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  },
-  {
-    path: '**',
-    component: PageNotFoundComponent
   }
 ];
 

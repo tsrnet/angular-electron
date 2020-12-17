@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ElectronService } from '../../../core/services';
+import { ElectronService } from '../../../services';
 import { User } from '../../../interfaces/index';
 
 @Component({

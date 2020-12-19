@@ -1,0 +1,29 @@
+<!-- <section id="login-stored-users-select">
+    <mat-form-field appearance="outline">
+        <mat-label>Usuarios guardados</mat-label>
+        <mat-select [(ngModel)]="this.selectedUser" name="selectedUser">
+            <mat-option *ngFor="let storedUser of this.storedUsers" [value]="storedUser">
+                <div class="option">
+                    <span>{{storedUser.data.email}}</span>
+                </div>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button><mat-icon matSuffix>add_circle</mat-icon></button>
+</section> -->
+
+<section id="login-stored-users-select" class="dark-theme">
+    <div matRipple id="select-box" (click)="this.onClick()">
+        <div class="select-value">
+            <img class="select-value-avatar" src="https://avatarfiles.alphacoders.com/105/thumb-105382.jpg" alt="user-avatar">
+            <span class="select-value-name">Federico Largo Pito</span>
+        </div>
+        <mat-icon [ngClass]="{'select-icon': true, 'select-icon-active': this.isOpen}">arrow_drop_up</mat-icon>
+    </div>
+
+    <ul *ngIf="this.isOpen" id="select-list">
+        <li></li>
+    </ul>
+</section>
+
+<div [ngClass]="{'backdrop': true, 'backdrop-active': this.isOpen}" (click)="this.onClick()"></div>

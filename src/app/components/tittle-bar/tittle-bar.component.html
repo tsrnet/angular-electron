@@ -1,6 +1,7 @@
-<header #tittlebar id="titlebar" class="dark">
+<header #tittlebar id="titlebar" class="dark" *ngIf="this.electron.isElectron">
     <div id="drag-region">
-        <div id="window-controls">
+        <div class="titlebar-title">BLOCMASTER</div>
+        <div id="tittlebar-controls">
 
             <div class="button" id="min-button" (click)="this.minimize()">
                 <svg aria-hidden="false" width="12" height="12" viewBox="0 0 12 12">

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ElectronService } from '../../../services';
-import { User } from '../../../interfaces/index';
+import { StoredUser, User } from '../../../interfaces/index';
 
 @Component({
 	selector: 'app-login-page',
@@ -10,17 +10,15 @@ import { User } from '../../../interfaces/index';
 })
 export class LoginPageComponent {
 
+	//data
 	email = new FormControl('', [Validators.required, Validators.email]);
 	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
-	isPasswordVisible: boolean = false;
-	showSpinner: boolean = false;
+	selectedUser: StoredUser = null;
+	storedUsers: StoredUser[];
 
-	private get user(): User {
-		return {
-			email: this.email.value,
-			password: this.password.value
-		}
-	}
+	//view
+	showPassword: boolean = false;
+	showSpinner: boolean = false;
 
 	get emailErrorMessage(): string {
 		if (this.email.hasError('required')) {
@@ -36,15 +34,19 @@ export class LoginPageComponent {
 		return this.password.hasError('pattern') ? 'Min 6 characters, numbers & letters' : '';
 	}
 
-	constructor(private core: ElectronService) { }
+	constructor(private core: ElectronService) {
+		this.retrieveStoredUsers();
+	}
 
 	public togglePasswordVisibility() {
-		this.isPasswordVisible = !this.isPasswordVisible;
+		this.showPassword = !this.showPassword;
 	}
 
 	logIn() {
+		console.log(this.selectedUser);
+		return;
 		this.showSpinner = true;
-		this.core.authService.signIn(this.user.email, this.user.password).then(
+		this.core.authService.signIn(this.selectedUser.data.email, this.selectedUser.data.password).then(
 			(res: boolean) => {
 				this.showSpinner = false;
 				if (res) this.core.ipcRenderer.send('login-success');
@@ -54,6 +56,48 @@ export class LoginPageComponent {
 				console.warn(err);
 			}
 		)
+	}
+
+	public retrieveStoredUsers() {
+		let storedUsers: StoredUser[] = [
+			{
+				data: {
+					email: 'sancheztorreon@gmail.com',
+					password: 'talparacual',
+					firstName: 'Antonio D.'
+				},
+				isLogged: true,
+				prefered: true
+			},
+			{
+				data: {
+					email: 'garcilasomanolo@gmail.com',
+					password: 'talparacual',
+					firstName: 'Manolo',
+					lastName: 'Garcia Jimenez',
+					avatar: 'https://i.pinimg.com/originals/ee/58/aa/ee58aabca3bd1c5ed50b1ae03637b8db.jpg'
+				},
+				isLogged: true,
+				prefered: false
+			},
+			{
+				data: {
+					email: 'codyjmc@gmail.com',
+					password: 'talparacual',
+					firstName: 'Jesus',
+					lastName: 'Morales Caliz',
+					avatar: 'https://avatarfiles.alphacoders.com/105/thumb-105382.jpg',
+					lastSession: '15-12-2020 17:45'
+				},
+				isLogged: true,
+				prefered: false
+			}
+		];
+
+		storedUsers.forEach((storedUser: StoredUser) => {
+			if (this.selectedUser === null && storedUser.prefered) this.selectedUser = storedUser;
+		})
+		this.storedUsers = storedUsers;
 	}
 
 	// logout() {

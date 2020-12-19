@@ -10,10 +10,10 @@ export class TittleBarComponent implements OnInit {
 
   @ViewChild("tittlebar", {static:true}) child: ElementRef;
   
-  constructor(private core: ElectronService) {}
+  constructor(public electron: ElectronService) {}
 
   public get canMaximize(): boolean {
-    return (this.core.isElectron) ? this.core.currentWindow.resizable : true;
+    return (this.electron.isElectron) ? this.electron.currentWindow.resizable : true;
   }
 
   ngOnInit(): void {
@@ -24,17 +24,17 @@ export class TittleBarComponent implements OnInit {
   }
   
   public minimize() {
-    this.core.currentWindow.minimize();
-    // this.core.ipcRenderer.send('login-success');
+    this.electron.currentWindow.minimize();
+    // this.electron.ipcRenderer.send('login-success');
 	}
 
 	public maximize() {
-		if (this.core.currentWindow.isMaximized()) this.core.currentWindow.unmaximize();
-		else this.core.currentWindow.maximize();
+		if (this.electron.currentWindow.isMaximized()) this.electron.currentWindow.unmaximize();
+		else this.electron.currentWindow.maximize();
 	}
 
 	public close() {
-		this.core.currentWindow.close();
+		this.electron.currentWindow.close();
   }
 
 }

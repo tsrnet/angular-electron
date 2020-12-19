@@ -19,6 +19,8 @@ export class ElectronService {
   screen: any;
   authService: AuthService;
 
+  viewReady: boolean = false;
+
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
   }

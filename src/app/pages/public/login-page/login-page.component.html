@@ -1,7 +1,8 @@
 <div class="page-wrapper dark">
     <section id="login-form">
         <form action="">
-            <div>
+            <app-login-select></app-login-select>
+            <div class="new-user-form" *ngIf="this.selectedUser === null; else storedUserData">
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
                     <input matInput [formControl]="email" required>
@@ -9,11 +10,33 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput [type]="this.isPasswordVisible ? 'text' : 'password'" [formControl]="password" required>
-                    <mat-icon matSuffix (click)="this.togglePasswordVisibility()">{{this.isPasswordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <input matInput [type]="this.showPassword ? 'text' : 'password'" [formControl]="password" required>
+                    <mat-icon matSuffix (click)="this.togglePasswordVisibility()">{{this.showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="password.invalid">{{this.passwordErrorMessage}}</mat-error>
                 </mat-form-field>
             </div>
+            <ng-template #storedUserData>
+                <div class="stored-user-card">
+                    <div class="row first">
+                        <div class="user-avatar">
+                            <img [src]="this.selectedUser.data.avatar ? this.selectedUser.data.avatar : 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg'" alt="">
+                        </div>
+                        <div class="user-name">
+                            <span class="span-body">{{this.selectedUser.data.firstName + ((this.selectedUser.data.lastName) ? ' '+this.selectedUser.data.lastName : '')}}</span>
+                        </div>
+                    </div>
+                    <div class="row second">
+                        <div class="info">
+                            <div>
+                                <span class="span-header">EMAIL</span><span class="span-body">{{this.selectedUser.data.email}}</span>
+                            </div>
+                            <div>
+                                <span class="span-header">ULTIMA SESION</span><span class="span-body"><i>{{(this.selectedUser.data.lastSession) ? this.selectedUser.data.lastSession : 'desconocido'}}</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
             <div>
                 <mat-divider></mat-divider>
                 <button mat-stroked-button (click)="this.logIn()">Log in</button>

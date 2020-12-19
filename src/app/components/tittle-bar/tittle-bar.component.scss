@@ -6,13 +6,23 @@
     height: 22px;
     width: 100%;
     padding: 4px;
+    z-index: 99;
 
     #drag-region {
         width: 100%;
         height: 100%;
         -webkit-app-region: drag;
+
+        .titlebar-title {
+            margin-left: 10px;
+            font-family: "Odibee Sans", cursive;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-weight: bold;
+            color: #a5a5a5;
+        }
         
-        #window-controls {
+        #tittlebar-controls {
             display: flex;
             justify-content: flex-end;
             position: absolute;
@@ -38,16 +48,16 @@
 .dark {
     background-color: #1B1B1B;
     #drag-region {
-        #window-controls {
+        #tittlebar-controls {
             div.button {
                 color: #dbdbdb;
             }
         }
-        #window-controls .button:hover {
+        #tittlebar-controls .button:hover {
             background-color: #ffffff13;
             color: #fff;
         }
-        #window-controls .button#close-button:hover {
+        #tittlebar-controls .button#close-button:hover {
             background-color: #f04747;
         }
     }
@@ -56,16 +66,16 @@
 .purple {
     background-color: #254053;
     #drag-region {
-        #window-controls {
+        #tittlebar-controls {
             div.button {
                 color: #dbdbdb;
             }
         }
-        #window-controls .button:hover {
+        #tittlebar-controls .button:hover {
             background-color: #ffffff13;
             color: #fff;
         }
-        #window-controls .button#close-button:hover {
+        #tittlebar-controls .button#close-button:hover {
             background-color: #f04747;
         }
     }

@@ -1,6 +1,8 @@
 div.page-wrapper {
     width: 100%;
     height: 100%;
+    max-height: 520px;
+    max-width: 380px;
     display: flex;
     padding: 10px;
     flex-direction: column;
@@ -18,6 +20,33 @@ div.page-wrapper {
             flex-direction: column;
             justify-content: space-between;
             user-select: none;
+
+            .login-storedUsers-select {
+                display: flex;
+                flex-direction: row;
+
+                mat-form-field {
+                    width: calc(100% - 64.5px);
+                }
+
+                button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 62px;
+                    width: 64.5px;
+                    transform: translateY(-11px);
+                    outline: none;
+                }
+
+                ::ng-deep .mat-form-field-outline-end {
+                    border-radius: 3px 0 0 3px;
+                }
+            }
+
+            ::ng-deep .mat-form-field-outline {
+                border-radius: 4px;
+            }
 
             div {
                 width: 100%;
@@ -48,8 +77,8 @@ div.page-wrapper {
                 mat-error {
                     user-select: all;
                 }
-    
-                input {
+
+                input, ::ng-deep .mat-select-value {
                     line-height: 1.3;
                 }
             }
@@ -58,8 +87,68 @@ div.page-wrapper {
                 margin-top: 15px;
                 font-weight: 500;
             }
-        }
 
+            .stored-user-card {
+                .row {
+                    width: 100%;
+
+                    .user-avatar {
+                        width: auto;
+
+                        img {
+                            width: 60px;
+                            height: 60px;
+                            margin: 10px;
+                            border-radius: 50%;
+                            border-width: 3px 3px 3px 3px;
+                            border-style: solid;
+                        }
+                    }
+
+                    .user-name {
+                        display: flex;
+                        align-items: center;
+                        padding: 0 10px;
+                    }
+
+                    span {
+                        font-size: 14px;
+                        padding: 3px 7px;
+                        border-radius: 5px;
+                    }
+
+                    
+                    span.span-header {
+                        border-radius: 3px 0 0 3px;
+                        background-color: #10AC84;
+                        line-height: 19px;
+                        font-size: 11px;
+                    }
+                    .info {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-evenly;
+                        padding: 0 10px;
+
+                        div {
+                            justify-content: unset;
+                        }
+
+                        .span-body {
+                            border-radius: 0 3px 3px 0;
+                            font-size: 13px;
+                        }
+                    }
+                }
+                .row.first {
+                    height: 80px;
+                }
+                .row.second {
+                    height: 80px;
+                }
+            }
+        }
     }
 
     section#signin-suggestion {
@@ -92,15 +181,23 @@ div#spinner {
 //THEMES
 
 .dark {
-    background-color: #2B2B2B;
+    background-color: #23252E;
 
     #login-form, #signin-suggestion {
-        background-color: #3B3B3B;
+        background-color: #24404B;
         
         form {
+            .login-storedUsers-select {
+                button {
+                    background-color: #24343E;
+                    border-width: 1px 1px 1px 0;
+                    border-color: #23252E;
+                    border-radius: 0 5px 5px 0;
+                    border-style: solid;
+                }
+            }
             ::ng-deep .mat-form-field-outline {
-                background-color: #2B2B2B;
-                border-radius: 4px;
+                background-color: #24343E;
             }
 
             mat-icon {
@@ -112,7 +209,7 @@ div#spinner {
             }
             /* default and hover color */
             ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-                color: #585858;
+                color: #23252e;
             }
             
             /* floating label color */
@@ -122,7 +219,7 @@ div#spinner {
             
             /* focused color */
             ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-                color: #585858;
+                color: #23252e;
             }
             
             /* floating label color */
@@ -130,17 +227,39 @@ div#spinner {
                 color: white; 
             }
 
+            ::ng-deep .mat-select-value {
+                color: white;
+            }
+
             input {
                 color: white;
             }
 
             mat-divider {
-                border-top-color:#585858;
+                border-top-color:#23252e;
             }
 
             button {
                 background-color: #10ac84;
                 color: #e6e6e6;
+            }
+
+            div.stored-user-card {
+                width: 100%;
+                height: 180px;
+                border-radius: 5px;
+                margin-bottom: 25px;
+                border: 1px solid #23252E;
+                background-color: #24343E;
+                color: white;
+                
+                .user-avatar img {
+                    border-color: #23252E;
+                }
+
+                span {
+                    background-color: #23252E;
+                }
             }
         }
     }
@@ -155,3 +274,6 @@ div#spinner {
 #spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
     stroke: #2DA183;
 }
+
+
+

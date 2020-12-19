@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { StoredUser } from '../../../../../interfaces';
 import { ElectronService } from '../../../../../services';
-import { Subject } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -46,7 +45,6 @@ export class LoginSelectComponent {
 	@Input('collection') storedUsers: StoredUser[];
 
 	//select functionality
-	_bodyAnimationDone = new Subject<AnimationEvent>();
 	public isOpen: boolean = false;
 
 	constructor(public electron: ElectronService) { }

@@ -43,7 +43,7 @@ export class LoginPageComponent {
 	}
 
 	logIn() {
-		console.log(this.selectedUser);
+		console.log(this.storedUsers);
 		return;
 		this.showSpinner = true;
 		this.core.authService.signIn(this.selectedUser.data.email, this.selectedUser.data.password).then(

@@ -18,10 +18,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 				height: '0px'
 			})),
 			transition('open => closed', [
-				animate('100ms cubic-bezier(0.4,0.0,0.2,1)'),
+				animate('150ms cubic-bezier(0.4,0.0,0.2,1)'),
 			]),
 			transition('closed => open', [
-				animate('100ms cubic-bezier(0.4,0.0,0.2,1)')
+				animate('150ms cubic-bezier(0.4,0.0,0.2,1)')
 			]),
 		]),
 	]
@@ -47,7 +47,7 @@ export class LoginSelectComponent {
 
 	//select functionality
 	_bodyAnimationDone = new Subject<AnimationEvent>();
-	public isOpen: boolean = true;
+	public isOpen: boolean = false;
 
 	constructor(public electron: ElectronService) { }
 

@@ -125,21 +125,31 @@ section#login-stored-users-select {
                         color: #3c4043;
                     }
                 }
+
+                mat-icon {
+                    display: none;
+                    position: absolute;
+                    cursor: move;
+                    right: 6px;
+                    color: #24343E;
+                }
             }
     
             mat-divider {
-                width: 90%;
                 padding: 0 10px;
                 align-self: center;
             }
     
             li.select-list-item.active {
-                pointer-events: none;
                 background-color: #D0D8E4;
             }
     
             li.select-list-item:hover:not(.active) {
                 background-color: #E8F0FE;
+            }
+
+            li.select-list-item:hover mat-icon {
+                display: block;
             }
     
             mat-divider:last-child {
@@ -208,6 +218,13 @@ div.backdrop-active {
             line-height: 1.3333;
             color: #3c4043;
         }
+    }
+
+    mat-icon {
+        position: absolute;
+        cursor: move;
+        right: 6px;
+        color: #24343E;
     }
 }
 

@@ -1,7 +1,7 @@
 <div class="page-wrapper dark">
     <section id="login-form">
         <form action="">
-            <app-login-select></app-login-select>
+            <app-login-select [collection]="this.storedUsers" [(value)]="this.selectedUser"></app-login-select>
             <div class="new-user-form" *ngIf="this.selectedUser === null; else storedUserData">
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>

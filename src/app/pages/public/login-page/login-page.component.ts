@@ -64,10 +64,10 @@ export class LoginPageComponent {
 				data: {
 					email: 'sancheztorreon@gmail.com',
 					password: 'talparacual',
-					firstName: 'Antonio D.'
+					firstName: 'Antonio D.',
 				},
 				isLogged: true,
-				prefered: true
+				prefered: false
 			},
 			{
 				data: {
@@ -90,7 +90,7 @@ export class LoginPageComponent {
 					lastSession: '15-12-2020 17:45'
 				},
 				isLogged: true,
-				prefered: false
+				prefered: true
 			}
 		];
 

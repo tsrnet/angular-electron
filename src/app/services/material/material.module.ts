@@ -7,6 +7,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from '@angular/material/card';
 import {MatRippleModule} from '@angular/material/core';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatSelectModule,
     MatCardModule,
     MatRippleModule,
+    DragDropModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -28,6 +30,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatSelectModule,
     MatCardModule,
     MatRippleModule,
+    DragDropModule,
     MatProgressSpinnerModule
   ]
 })

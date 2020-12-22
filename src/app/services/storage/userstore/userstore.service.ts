@@ -10,7 +10,7 @@ export class UserStoreService {
 	constructor(private fs: AngularFirestore) {}
 
 	public add(newUser: UserObject) {
-		this.fs.collection('users').doc(newUser.userId).set(newUser).then(
+		this.fs.collection('users').doc(''+newUser.userId).set(newUser).then(
 			(value) => {
 				console.log('Created!', value);
 			},

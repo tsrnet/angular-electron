@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { StoredUser, User } from '../../../interfaces';
-import { SuperStorage } from '../../../classes/superstorage/superstorage';
+import { User } from '../../../interfaces';
 import { LocalStorageService } from '../localstorage/localstorage.service';
 import { ElectronService } from '../../electron/electron.service';
-import { SuperObject } from '../../../classes/superobject/superobject';
 
 interface StoredUserCtrl {
     users: User[];
@@ -11,17 +9,13 @@ interface StoredUserCtrl {
 }
 
 @Injectable({
-	providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserLocalStorageService {
 
     private storedUsersCtrl: StoredUserCtrl = {
         users: [],
-        preselectedUserId: null
-    }
-
-    get users() {
-        return this.storedUsersCtrl.users;
+        preselectedUserId: 0
     }
 
     get preselectedUser() {
@@ -41,89 +35,74 @@ export class UserLocalStorageService {
         if (!storedUsersCtrl) this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
         this.updateLocalStorage();
     }
-    
-    public store(user: User, preselected: boolean = false) {
 
+    public store(user: User, preselected: boolean = false): Promise<boolean> {
+        return new Promise<boolean>((res, err) => {
+            try {
+                this.updateLocalStorage();
+                let index: number = this.indexFor(user);
+                this.storedUsersCtrl.users[index] = user;
+                if (index == this.preselectedUserId) this.storedUsersCtrl.preselectedUserId = (preselected) ? index : 0;
+                this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
+                res(this.userExists(user));
+            } catch (error) {
+                err(false);
+            }
+        });
+    }
+
+    public delete(user: User): Promise<boolean> {
+        return new Promise<boolean>((res, err) => {
+            try {
+                this.updateLocalStorage();
+                if (!this.userExists(user)) res(false);
+                let index = this.indexFor(user);
+                this.storedUsersCtrl.users.splice(index, 1);
+                if (index == this.preselectedUserId) this.storedUsersCtrl.preselectedUserId = 0;
+                this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
+                res(true);
+            } catch (error) {
+                err(false);
+            }
+        });
+    }
+
+    public getAll() {
         this.updateLocalStorage();
-        let index: number;
-        if (this.userExists(user)) index = this.indexOf(user);
-        else index = this.length;
-
-
-        this.storedUsersCtrl.users[index] = user;
-        if (index == this.preselectedUserId) this.storedUsersCtrl.preselectedUserId = (preselected) ? index : this.preselectedUserId;
-        this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
-
+        return this.storedUsersCtrl.users;
     }
 
     private userExists(user: User): boolean {
         let exist = false;
+        if (this.length == 0) return exist;
         let i = 0;
         do {
-            if (SuperObject.isEquals(this.users[i], user)) exist = true;
+            if (this.storedUsersCtrl.users[i].userId === user.userId) exist = true;
             i++;
-        } while (i <= this.length);
+        } while (i < this.length);
         return exist;
     }
 
-    private indexOf(user: User): number {
-        let index = -1;
+    /**
+     * This method return a index for the user specified. If the user exist alredy, it return the index of that user.
+     * @param user User that needs a index.  
+     */
+    private indexFor(user: User): number {
+        //By default, the length of the users array is the index for the "new to be" user.
+        let index = this.length;
+        //If the index is cero, there arent any items on the array. Wich means that 0 is de index for the new user.
+        if (!index) return index;
+        //This loop search for existant users comparating its id's. The loops end in the exact moment when its find a existing user.
         let i = 0;
         do {
-            if (SuperObject.isEquals(this.users[i], user)) index = i;
+            if (this.storedUsersCtrl.users[i].userId === user.userId) index = i;
             i++;
-        } while (i <= this.length);
-        return index
+        } while (i < this.length);
+        return index;
     }
 
     private updateLocalStorage() {
         this.storedUsersCtrl = this.localStorage.get('storedusers', (!this.electron.appConfig.production));
     }
-
-    // private contains(user: StoredUser): boolean {
-    //     let exist: boolean = false;
-    //     this._users.data.forEach((storedUser: StoredUser) => {
-    //         // if ()
-    //     });
-    //     return exist;
-    // }
-
-
-
-
-
-
-
-    public getPreselected() {
-        let storedUsers = this.localStorage.get('storedusers', true);
-    }
-    
-    // public add(propertyName: string, propertyValue: any, json: boolean = false): LocalStorageService {
-    //     let pValue: any = (json) ? JSON.stringify(propertyValue) : propertyValue;
-    //     localStorage.setItem(propertyName, pValue);
-    //     return this;
-    // }
-
-    // public get(propertyName: string, json: boolean = false): any {
-    //     let item = localStorage.getItem(propertyName);
-    //     return (item != 'undefined') ? ((json) ? JSON.parse(item) : item) : false;
-    // }
-
-    // public exist(propertyName: string): boolean {
-    //     return (this.get(propertyName)) ? true : false;
-    // }
-
-    // public remove(propertyName: string): LocalStorageService {
-    //     localStorage.removeItem(propertyName);
-    //     return this;
-    // }
-
-    // public count(): number {
-    //     return localStorage.length;
-    // }
-
-    // public clear(): void {
-    //     localStorage.clear();
-    // }
 
 }

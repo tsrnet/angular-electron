@@ -1,5 +1,5 @@
 export class UserObject {
-    userId: string;
+    userId: number;
     providerId: string;
     email: string;
     password: string;
@@ -11,6 +11,7 @@ export class UserObject {
 }
 
 export class User {
+    userId: number;
     providerId: string;
     email: string;
     password: string;
@@ -25,6 +26,7 @@ export class User {
     }
 
     constructor(userObject: UserObject) {
+        this.userId = userObject.userId;
         this.providerId = userObject.providerId;
         this.email = userObject.email;
         this.password = userObject.password;

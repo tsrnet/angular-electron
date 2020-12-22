@@ -58,13 +58,16 @@ export class LoginPageComponent {
 
 	public retrieveStoredUsers() {
 		this.userLocalStorage.store(User.New({
-			userId: '1584',
-			providerId: 'google',
-			email: 'inventado@gmail.com',
-			password: 'talparacual',
+			userId: 1549,
+			providerId: 'telegram',
+			email: 'thegravewalker@gmail.com',
+			password: 'newpassword',
 			userName: 'Inventado#1584',
-			firstName: 'Inventado'
-		}));
+			firstName: 'Inventado',
+			lastName: 'Invencio'
+		})).then((res)=> {
+			console.log(res);
+		});
 
 		let storedUsers: StoredUser[] = [];
 

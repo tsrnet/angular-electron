@@ -8,6 +8,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from '@angular/material/card';
 import {MatRippleModule} from '@angular/material/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatSelectModule,
     MatCardModule,
     MatRippleModule,
+    MatDialogModule,
     DragDropModule,
+    MatTooltipModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -29,9 +33,11 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatDividerModule,
     MatSelectModule,
     MatCardModule,
+    MatDialogModule,
     MatRippleModule,
     DragDropModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule { }

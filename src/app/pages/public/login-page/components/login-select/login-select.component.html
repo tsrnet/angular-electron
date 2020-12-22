@@ -1,25 +1,35 @@
 <section id="login-stored-users-select" class="dark-theme">
     <div matRipple id="select-box" (click)="this.onClick()">
-        <div class="select-value">
-            <img class="select-value-avatar" [src]="this.getStoredUserAvatar(this.value)" alt="selected-user-avatar">
-            <span class="select-value-name">{{this.getStoredUserFullName(this.value)}}</span>
+        <div class="select-value" *ngIf="this.value !== null; else noSelectedUser">
+            <img class="select-value-avatar" [src]="this.value.data.getAvatar()" alt="selected-user-avatar">
+            <span class="select-value-name">{{this.value.data.getFullName()}}</span>
         </div>
+        <ng-template #noSelectedUser>
+            <span class="select-value-placeholder">Select stored user</span>
+        </ng-template>
         <mat-icon [ngClass]="{'select-icon': true, 'select-icon-active': this.isOpen}">arrow_drop_up</mat-icon>
     </div>
 
     <div class="select-list-wrapper" [@openClose]="isOpen ? 'open' : 'closed'" (@openClose.done)="this.captureDoneEvent($event)" (@openClose.start)="this.captureStartEvent($event)">
         <ul id="select-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
-            <ng-container *ngFor="let storedUser of this.storedUsers">
-                <li matRipple cdkDrag cdkDragBoundary="#select-list" [ngClass]="{'select-list-item': true, 'active': storedUser === this.value}" (click)="this.onClick(storedUser)">
-                    <img class="list-item-avatar" [src]="this.getStoredUserAvatar(storedUser)" alt="list-item-user-avatar">
-                    <div class="list-item-info">
-                        <span class="list-item-name">{{this.getStoredUserFullName(storedUser)}}</span>
-                        <span class="list-item-email">{{this.storedUser.data.email}}</span>
+            <ng-container *ngIf="!this.emptyList; else noStoredUsers">
+                <ng-container *ngFor="let storedUser of this.storedUsers; let i = index">
+                    <div class="select-list-item-wrapper" cdkDrag cdkDragBoundary="#select-list">
+                        <li matRipple [ngClass]="{'select-list-item': true, 'active': storedUser === this.value}" (click)="this.onClick(storedUser)">
+                            <img class="list-item-avatar" [src]="storedUser.data.getAvatar()" alt="list-item-user-avatar">
+                            <div class="list-item-info">
+                                <span class="list-item-name">{{storedUser.data.getFullName()}}</span>
+                                <span class="list-item-email">{{storedUser.data.email}}</span>
+                            </div>
+                        </li>
+                        <button matRipple class="list-item-remove" (click)="this.removeStoredUser(i)"><mat-icon>delete</mat-icon></button>
                     </div>
-                    <mat-icon cdkDragHandle class="list-item-drag-handle">drag_indicator</mat-icon>
-                </li>
-                <mat-divider></mat-divider>
+                    <mat-divider></mat-divider>
+                </ng-container>
             </ng-container>
+            <ng-template #noStoredUsers>
+                <span class="select-list-empty-label">There are no stored users yet</span>
+            </ng-template>
         </ul>
     </div>
 </section>

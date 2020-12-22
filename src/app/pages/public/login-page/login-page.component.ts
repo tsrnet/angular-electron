@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ElectronService } from '../../../services';
+import { ElectronService, UserLocalStorageService } from '../../../services';
 import { StoredUser, User } from '../../../interfaces/index';
 
 @Component({
@@ -34,7 +34,7 @@ export class LoginPageComponent {
 		return this.password.hasError('pattern') ? 'Min 6 characters, numbers & letters' : '';
 	}
 
-	constructor(private core: ElectronService) {
+	constructor(private core: ElectronService, private userLocalStorage: UserLocalStorageService) {
 		this.retrieveStoredUsers();
 	}
 
@@ -43,8 +43,6 @@ export class LoginPageComponent {
 	}
 
 	logIn() {
-		console.log(this.storedUsers);
-		return;
 		this.showSpinner = true;
 		this.core.authService.signIn(this.selectedUser.data.email, this.selectedUser.data.password).then(
 			(res: boolean) => {
@@ -59,43 +57,19 @@ export class LoginPageComponent {
 	}
 
 	public retrieveStoredUsers() {
-		let storedUsers: StoredUser[] = [
-			{
-				data: {
-					email: 'sancheztorreon@gmail.com',
-					password: 'talparacual',
-					firstName: 'Antonio D.',
-				},
-				isLogged: true,
-				prefered: false
-			},
-			{
-				data: {
-					email: 'garcilasomanolo@gmail.com',
-					password: 'talparacual',
-					firstName: 'Manolo',
-					lastName: 'Garcia Jimenez',
-					avatar: 'https://i.pinimg.com/originals/ee/58/aa/ee58aabca3bd1c5ed50b1ae03637b8db.jpg'
-				},
-				isLogged: true,
-				prefered: false
-			},
-			{
-				data: {
-					email: 'codyjmc@gmail.com',
-					password: 'talparacual',
-					firstName: 'Jesus',
-					lastName: 'Morales Caliz',
-					avatar: 'https://avatarfiles.alphacoders.com/105/thumb-105382.jpg',
-					lastSession: '15-12-2020 17:45'
-				},
-				isLogged: true,
-				prefered: true
-			}
-		];
+		this.userLocalStorage.store(User.New({
+			userId: '1584',
+			providerId: 'google',
+			email: 'inventado@gmail.com',
+			password: 'talparacual',
+			userName: 'Inventado#1584',
+			firstName: 'Inventado'
+		}));
+
+		let storedUsers: StoredUser[] = [];
 
 		storedUsers.forEach((storedUser: StoredUser) => {
-			if (this.selectedUser === null && storedUser.prefered) this.selectedUser = storedUser;
+			if (this.selectedUser === null && storedUser.preselected) this.selectedUser = storedUser;
 		})
 		this.storedUsers = storedUsers;
 	}

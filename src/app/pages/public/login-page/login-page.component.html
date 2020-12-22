@@ -16,26 +16,7 @@
                 </mat-form-field>
             </div>
             <ng-template #storedUserData>
-                <div class="stored-user-card">
-                    <div class="row first">
-                        <div class="user-avatar">
-                            <img [src]="this.selectedUser.data.avatar ? this.selectedUser.data.avatar : 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg'" alt="">
-                        </div>
-                        <div class="user-name">
-                            <span class="span-body">{{this.selectedUser.data.firstName + ((this.selectedUser.data.lastName) ? ' '+this.selectedUser.data.lastName : '')}}</span>
-                        </div>
-                    </div>
-                    <div class="row second">
-                        <div class="info">
-                            <div>
-                                <span class="span-header">EMAIL</span><span class="span-body">{{this.selectedUser.data.email}}</span>
-                            </div>
-                            <div>
-                                <span class="span-header">ULTIMA SESION</span><span class="span-body"><i>{{(this.selectedUser.data.lastSession) ? this.selectedUser.data.lastSession : 'desconocido'}}</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <app-login-user-card [selectedUser]="this.selectedUser"></app-login-user-card>
             </ng-template>
             <div>
                 <mat-divider></mat-divider>

@@ -3,6 +3,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { StoredUser } from '../../../../../interfaces';
 import { ElectronService } from '../../../../../services';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from './templates/dialog-confirm.component';
 
 @Component({
 	selector: 'app-login-select',
@@ -29,6 +31,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class LoginSelectComponent {
 
 	private _value: StoredUser;
+	private _storedUsers: StoredUser[]
 
 	@Input() set value(val: StoredUser) {
 		this.valueChange.emit(val);
@@ -42,36 +45,32 @@ export class LoginSelectComponent {
 		return this._value;
 	}
 
-	@Input('collection') storedUsers: StoredUser[];
+	@Input('collection') set storedUsers(storedUsers: StoredUser[]) {
+		this._storedUsers = storedUsers;
+		this.emptyList = (storedUsers.length > 0) ? false : true;
+	}
 
+	get storedUsers() {
+		return this._storedUsers;
+	}
+	
 	//select functionality
 	public isOpen: boolean = false;
+	public emptyList: boolean = true;
 
-	constructor(public electron: ElectronService) { }
+	constructor(public electron: ElectronService, public dialog: MatDialog) { }
 
 	public onClick(storedUser?: StoredUser) {
 		if (storedUser !== undefined) {
-			if (this.value === storedUser) return;
+			if (this.value === storedUser) this.value = null;
 			else this.value = storedUser;
 		}
 		this.isOpen = !this.isOpen;
 	}
 
-	public getStoredUserAvatar(storedUser: StoredUser): string {
-		let avatar = (storedUser.data.avatar) ? storedUser.data.avatar : '';
-		if (avatar === '') avatar = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg';
-		return avatar;
-	}
-
-	public getStoredUserFullName(storedUser: StoredUser): string {
-		let user = storedUser.data;
-		let fullName = user.firstName.trimRight();
-		if (user.lastName) fullName += ' ' + user.lastName.trimLeft();
-		return fullName;
-	}
-
 	public captureDoneEvent(event: any) {
 		if (event.toState === 'closed') event.element.style.display = 'none';
+		if (!this.emptyList && this.storedUsers.length == 0) this.emptyList = true;
 	}
 
 	public captureStartEvent(event: any) {
@@ -80,6 +79,19 @@ export class LoginSelectComponent {
 
 	public onDrop(event: CdkDragDrop<string[]>) {
 		moveItemInArray(this.storedUsers, event.previousIndex, event.currentIndex);
+	}
+
+	public removeStoredUser(index: number) {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+		dialogRef.afterClosed().subscribe((result: boolean) => {
+			if (result) {
+				if (this.storedUsers[index] === this.value) {
+					this.value = null;
+				} 
+				this.storedUsers.splice(index, 1);
+				if (this.storedUsers.length == 0) this.isOpen = false;
+			} 
+		});
 	}
 
 }

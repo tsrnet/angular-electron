@@ -9,9 +9,11 @@ import { MaterialModule } from '../../../services/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginSelectComponent } from './components/login-select/login-select.component';
 import { TextWrapDirective } from '../../../directives/text-wrap/text-wrap.directive';
+import { LoginUserCardComponent } from './components/login-user-card/login-user-card.component';
+import { ConfirmDialog } from './components/login-select/templates/dialog-confirm.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, LoginSelectComponent, TextWrapDirective],
+  declarations: [LoginPageComponent, LoginSelectComponent, TextWrapDirective, LoginUserCardComponent, ConfirmDialog],
   imports: [CommonModule, ComponentsModule, LoginPageRoutingModule, MaterialModule, ReactiveFormsModule]
 })
 export class LoginPageModule { }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ElectronService, UserLocalStorageService } from '../../../services';
-import { StoredUser, User } from '../../../interfaces/index';
+import { ElectronService } from '../../../services';
+import { LoginPageService } from './login-page.service';
 
 @Component({
 	selector: 'app-login-page',
@@ -10,45 +10,26 @@ import { StoredUser, User } from '../../../interfaces/index';
 })
 export class LoginPageComponent {
 
-	//data
-	email = new FormControl('', [Validators.required, Validators.email]);
-	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
-	selectedUser: StoredUser = null;
-	storedUsers: StoredUser[];
-
 	//view
 	showPassword: boolean = false;
 	showSpinner: boolean = false;
 
-	get emailErrorMessage(): string {
-		if (this.email.hasError('required')) {
-			return 'You must enter a value';
-		}
-		return this.email.hasError('email') ? 'Not a valid email' : '';
-	}
-
-	get passwordErrorMessage(): string {
-		if (this.password.hasError('required')) {
-			return 'You must enter a value';
-		}
-		return this.password.hasError('pattern') ? 'Min 6 characters, numbers & letters' : '';
-	}
-
-	constructor(private core: ElectronService, private userLocalStorage: UserLocalStorageService) {
-		this.retrieveStoredUsers();
-	}
-
-	public togglePasswordVisibility() {
-		this.showPassword = !this.showPassword;
-	}
+	constructor(private core: ElectronService, public loginPageService: LoginPageService) {}
 
 	logIn() {
 		this.showSpinner = true;
-		this.core.authService.signIn(this.selectedUser.data.email, this.selectedUser.data.password).then(
+		this.core.authService.signIn(this.loginPageService.selectedUser.email, this.loginPageService.selectedUser.password).then(
 			(res: boolean) => {
 				this.showSpinner = false;
-				if (res) this.core.ipcRenderer.send('login-success');
-				else console.log(res);
+				console.log(res);
+				if (res) {
+					this.core.authService.signOut().then(
+						(res: boolean) => {
+							console.log(res);
+						}, (err: any) => {
+							console.warn(err);
+						})
+					}
 			}, (err: any) => {
 				this.showSpinner = false;
 				console.warn(err);
@@ -56,26 +37,13 @@ export class LoginPageComponent {
 		)
 	}
 
-	public retrieveStoredUsers() {
-		this.userLocalStorage.store(User.New({
-			userId: 1549,
-			providerId: 'telegram',
-			email: 'thegravewalker@gmail.com',
-			password: 'newpassword',
-			userName: 'Inventado#1584',
-			firstName: 'Inventado',
-			lastName: 'Invencio'
-		})).then((res)=> {
-			console.log(res);
-		});
-
-		let storedUsers: StoredUser[] = [];
-
-		storedUsers.forEach((storedUser: StoredUser) => {
-			if (this.selectedUser === null && storedUser.preselected) this.selectedUser = storedUser;
-		})
-		this.storedUsers = storedUsers;
-	}
+	// public retrieveStoredUsers() {
+	// 	this.userStore.getAll().then((users) => {
+	// 		users.forEach((user: User) => {
+	// 			this.storedUsers.store(user);
+	// 		})
+	// 	})
+	// }
 
 	// logout() {
 	// 	this.core.authService.signOut().then(

@@ -15,7 +15,7 @@ export class LocalStorageService {
 
     public get(propertyName: string, json: boolean = false): any {
         let item = localStorage.getItem(propertyName);
-        return (item != 'undefined') ? ((json) ? JSON.parse(item) : item) : false;
+        return (item != 'undefined') ? ((json) ? JSON.parse(item) : item) : null;
     }
 
     public exist(propertyName: string): boolean {

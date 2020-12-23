@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { User } from '../../../interfaces';
 import { LocalStorageService } from '../localstorage/localstorage.service';
 import { ElectronService } from '../../electron/electron.service';
+import { from } from 'rxjs';
 
 interface StoredUserCtrl {
-    users: User[];
-    preselectedUserId: number;
+    id: number;
+    data: User[];
+    preselectedId: number;
 }
 
 @Injectable({
@@ -13,53 +15,82 @@ interface StoredUserCtrl {
 })
 export class UserLocalStorageService {
 
-    private storedUsersCtrl: StoredUserCtrl = {
-        users: [],
-        preselectedUserId: 0
+    private ID: number;
+
+    private _storedUsers: StoredUserCtrl = {
+        id: 1,
+        data: [],
+        preselectedId: null
+    }
+    private _preselectedUser: User = null;
+
+    get users() {
+        return this._storedUsers.data;
     }
 
-    get preselectedUser() {
-        return this.storedUsersCtrl.users[this.preselectedUserId];
+    get preselectedUser(): User {
+        return this._preselectedUser??null;
     }
 
-    get preselectedUserId() {
-        return this.storedUsersCtrl.preselectedUserId;
+    get preselectedId(): number {
+        return this._storedUsers.preselectedId;
     }
 
-    get length() {
-        return this.storedUsersCtrl.users.length;
+    set preselectedId(newId: number) {
+        this._preselectedUser = this.getById(newId);
+        this._storedUsers.preselectedId = newId;
+    }
+
+    get length(): number {
+        return this._storedUsers.data.length;
+    }
+
+    get isEmpty(): boolean {
+        return (this.length === 0);
+    }
+
+    get firstItemId(): number {
+        return this._storedUsers.data[0]?.userId??-1;
     }
 
     constructor(private electron: ElectronService, private localStorage: LocalStorageService) {
-        let storedUsersCtrl = this.localStorage.get('storedusers', (!this.electron.appConfig.production));
-        if (!storedUsersCtrl) this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
-        this.updateLocalStorage();
+        this.initializeLocalStorage();
     }
 
+    /**
+     * Add or update the user to the local storage.
+     * @param user User to add or update
+     * @param preselected Select this user as preselect
+     */
     public store(user: User, preselected: boolean = false): Promise<boolean> {
         return new Promise<boolean>((res, err) => {
             try {
-                this.updateLocalStorage();
+                this.retrieveLocalStorage();
                 let index: number = this.indexFor(user);
-                this.storedUsersCtrl.users[index] = user;
-                if (index == this.preselectedUserId) this.storedUsersCtrl.preselectedUserId = (preselected) ? index : 0;
-                this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
-                res(this.userExists(user));
+                this._storedUsers.data[index] = user;
+                if (preselected) this.preselectedId = user.userId;
+                this.updateLocalStorage();
+                res(!this.userExists(user));
             } catch (error) {
-                err(false);
+                err(error);
             }
         });
+    }
+
+    public deletePreselectedUser() {
+        this.preselectedId = null;
+        this.updateLocalStorage();
     }
 
     public delete(user: User): Promise<boolean> {
         return new Promise<boolean>((res, err) => {
             try {
-                this.updateLocalStorage();
+                this.retrieveLocalStorage();
                 if (!this.userExists(user)) res(false);
                 let index = this.indexFor(user);
-                this.storedUsersCtrl.users.splice(index, 1);
-                if (index == this.preselectedUserId) this.storedUsersCtrl.preselectedUserId = 0;
-                this.localStorage.add('storedusers', this.storedUsersCtrl, (!this.electron.appConfig.production));
+                this._storedUsers.data.splice(index, 1);
+                if (this.preselectedId == user.userId) this.preselectedId = null;
+                this.updateLocalStorage();
                 res(true);
             } catch (error) {
                 err(false);
@@ -68,19 +99,40 @@ export class UserLocalStorageService {
     }
 
     public getAll() {
-        this.updateLocalStorage();
-        return this.storedUsersCtrl.users;
+        this.retrieveLocalStorage();
+        return this._storedUsers.data;
     }
 
+
+    /**
+     * Moves an item one index in an array to another.
+     * @param fromIndex Starting index of the item.
+     * @param toIndex Index to which the item should be moved.
+     */
+    public moveItemInArray(old_index: number, new_index: number): void {
+        if (new_index >= this._storedUsers.data.length) {
+            var i = new_index - this._storedUsers.data.length + 1;
+            while (i--) {
+                this._storedUsers.data.push(undefined);
+            }
+        }
+        this._storedUsers.data.splice(new_index, 0, this._storedUsers.data.splice(old_index, 1)[0]);
+        this.updateLocalStorage();
+    }
+
+
+    private getById(userId: number): User {
+        let user = this._storedUsers.data.find(((user) => user.userId == userId));
+        return (user) ? user : null;
+    }
+
+    /**
+     * Searches the user in the array.
+     * @param user User to find
+     * @returns true or false
+     */
     private userExists(user: User): boolean {
-        let exist = false;
-        if (this.length == 0) return exist;
-        let i = 0;
-        do {
-            if (this.storedUsersCtrl.users[i].userId === user.userId) exist = true;
-            i++;
-        } while (i < this.length);
-        return exist;
+        return (this.getById(user.userId)) ? true : false;
     }
 
     /**
@@ -95,14 +147,45 @@ export class UserLocalStorageService {
         //This loop search for existant users comparating its id's. The loops end in the exact moment when its find a existing user.
         let i = 0;
         do {
-            if (this.storedUsersCtrl.users[i].userId === user.userId) index = i;
+            if (this._storedUsers.data[i].userId === user.userId) index = i;
             i++;
         } while (i < this.length);
         return index;
     }
 
+    private generateID(previousID: number): number {
+        let ID = Math.floor((Math.random() * 1000) + 1);
+        if (previousID == ID) ID = this.generateID(previousID);
+        return ID;
+    }
+
+    private getFromLocalStorage(): StoredUserCtrl {
+        let rawStoredUsers: StoredUserCtrl = this.localStorage.get('storedusers', (!this.electron.appConfig.production));
+        let storedUsers: StoredUserCtrl = {id: 1, data: [], preselectedId: null}
+
+        if (rawStoredUsers !== null) {
+            storedUsers.id = this.generateID(rawStoredUsers.id);
+            rawStoredUsers.data.forEach(((user: User) => storedUsers.data.push(User.New(user))));
+            storedUsers.preselectedId = rawStoredUsers.preselectedId;
+        }
+
+        return storedUsers;
+    }
+
     private updateLocalStorage() {
-        this.storedUsersCtrl = this.localStorage.get('storedusers', (!this.electron.appConfig.production));
+        this.localStorage.add('storedusers', this._storedUsers, (!this.electron.appConfig.production));
+        this.retrieveLocalStorage();
+    }
+
+    private retrieveLocalStorage() {
+        this._storedUsers = this.getFromLocalStorage();
+        if (this.preselectedId === -1) this.preselectedId = this.firstItemId;
+        this._preselectedUser = this.getById(this.preselectedId);
+    }
+
+    private initializeLocalStorage() {
+        this._storedUsers = this.getFromLocalStorage();
+        this.updateLocalStorage();
     }
 
 }

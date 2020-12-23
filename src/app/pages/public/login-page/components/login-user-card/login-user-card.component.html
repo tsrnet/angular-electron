@@ -1,15 +1,15 @@
-<section id="login-user-card" class="dark-theme">
+<section id="login-user-card" class="dark-theme" *ngIf="this.loginPageService.existSelectedUser">
     <div class="user-card">
         <div class="user-card-body">
-            <div class="user-card-provider-icon" [matTooltip]="this.selectedUserAccountProvider.name + ' Auth'"><img [src]="this.selectedUserAccountProvider.resources.icon.src" alt=""></div>
-            <img class="user-card-avatar" [src]="this.selectedUser.data.getAvatar()" alt="user-card-avatar">
+            <!-- <div class="user-card-provider-icon" [matTooltip]="this.selectedUserAccountProvider.name + ' Auth'"><img [src]="this.selectedUserAccountProvider.resources.icon.src" alt=""></div> -->
+            <img class="user-card-avatar" [src]="this.loginPageService.selectedUser.getAvatar()" alt="user-card-avatar">
             <div class="user-card-info">
-                <span class="user-name">{{this.selectedUser.data.userName}}</span>
-                <span class="user-email">{{this.selectedUser.data.email}}</span>
+                <span class="user-name">{{this.loginPageService.selectedUser.userName}}</span>
+                <span class="user-email">{{this.loginPageService.selectedUser.email}}</span>
             </div>
         </div>
         <div class="user-card-footer">
-            <span>Last session: {{this.selectedUser.data.getLastSession('unknown')}}</span>
+            <span>Last session: {{this.loginPageService.selectedUser.getLastSession('unknown')}}</span>
         </div>
     </div>
 </section>

@@ -1,8 +1,8 @@
 <section id="login-stored-users-select" class="dark-theme">
     <div matRipple id="select-box" (click)="this.onClick()">
-        <div class="select-value" *ngIf="this.value !== null; else noSelectedUser">
-            <img class="select-value-avatar" [src]="this.value.data.getAvatar()" alt="selected-user-avatar">
-            <span class="select-value-name">{{this.value.data.getFullName()}}</span>
+        <div class="select-value" *ngIf="this.loginPageService.existSelectedUser; else noSelectedUser">
+            <img class="select-value-avatar" [src]="this.loginPageService.selectedUser.getAvatar()" alt="selected-user-avatar">
+            <span class="select-value-name">{{this.loginPageService.selectedUser.getFullName()}}</span>
         </div>
         <ng-template #noSelectedUser>
             <span class="select-value-placeholder">Select stored user</span>
@@ -11,18 +11,18 @@
     </div>
 
     <div class="select-list-wrapper" [@openClose]="isOpen ? 'open' : 'closed'" (@openClose.done)="this.captureDoneEvent($event)" (@openClose.start)="this.captureStartEvent($event)">
-        <ul id="select-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+        <ul id="select-list" cdkDropList (cdkDropListDropped)="this.loginPageService.moveItemInArray($event.previousIndex, $event.currentIndex)">
             <ng-container *ngIf="!this.emptyList; else noStoredUsers">
-                <ng-container *ngFor="let storedUser of this.storedUsers; let i = index">
+                <ng-container *ngFor="let storedUser of this.loginPageService.storedUsers; let i = index">
                     <div class="select-list-item-wrapper" cdkDrag cdkDragBoundary="#select-list">
-                        <li matRipple [ngClass]="{'select-list-item': true, 'active': storedUser === this.value}" (click)="this.onClick(storedUser)">
-                            <img class="list-item-avatar" [src]="storedUser.data.getAvatar()" alt="list-item-user-avatar">
+                        <li matRipple [ngClass]="{'select-list-item': true, 'active': storedUser.userId === this.loginPageService.selectedUser?.userId}" (click)="this.onClick(storedUser)">
+                            <img class="list-item-avatar" [src]="storedUser.getAvatar()" alt="list-item-user-avatar">
                             <div class="list-item-info">
-                                <span class="list-item-name">{{storedUser.data.getFullName()}}</span>
-                                <span class="list-item-email">{{storedUser.data.email}}</span>
+                                <span class="list-item-name">{{storedUser.getFullName()}}</span>
+                                <span class="list-item-email">{{storedUser.email}}</span>
                             </div>
                         </li>
-                        <button matRipple class="list-item-remove" (click)="this.removeStoredUser(i)"><mat-icon>delete</mat-icon></button>
+                        <button matRipple class="list-item-remove" (click)="this.deleteStoredUser(storedUser)"><mat-icon>delete</mat-icon></button>
                     </div>
                     <mat-divider></mat-divider>
                 </ng-container>
@@ -32,6 +32,5 @@
             </ng-template>
         </ul>
     </div>
+    <div [ngClass]="{'backdrop': true, 'backdrop-active': this.isOpen}" (click)="this.onClick()"></div>
 </section>
-
-<div [ngClass]="{'backdrop': true, 'backdrop-active': this.isOpen}" (click)="this.onClick()"></div>

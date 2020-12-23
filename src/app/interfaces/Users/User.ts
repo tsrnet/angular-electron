@@ -21,11 +21,11 @@ export class User {
     avatar?: string;
     lastSession?: string;
 
-    public static New(userObject: UserObject): User {
+    public static New(userObject: UserObject|User): User {
         return new this(userObject);
     }
 
-    constructor(userObject: UserObject) {
+    constructor(userObject: UserObject|User) {
         this.userId = userObject.userId;
         this.providerId = userObject.providerId;
         this.email = userObject.email;

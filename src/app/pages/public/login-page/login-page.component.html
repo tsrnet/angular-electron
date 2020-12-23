@@ -1,33 +1,22 @@
 <div class="page-wrapper dark">
-    <section id="login-form">
-        <form action="">
-            <app-login-select [collection]="this.storedUsers" [(value)]="this.selectedUser"></app-login-select>
-            <div class="new-user-form" *ngIf="this.selectedUser === null; else storedUserData">
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput [formControl]="email" required>
-                    <mat-error *ngIf="email.invalid">{{this.emailErrorMessage}}</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input matInput [type]="this.showPassword ? 'text' : 'password'" [formControl]="password" required>
-                    <mat-icon matSuffix (click)="this.togglePasswordVisibility()">{{this.showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    <mat-error *ngIf="password.invalid">{{this.passwordErrorMessage}}</mat-error>
-                </mat-form-field>
-            </div>
-            <ng-template #storedUserData>
-                <app-login-user-card [selectedUser]="this.selectedUser"></app-login-user-card>
-            </ng-template>
-            <div>
-                <mat-divider></mat-divider>
-                <button mat-stroked-button (click)="this.logIn()">Log in</button>
-            </div>
-        </form>
-    </section>
-    <section id="signin-suggestion">
-        <button mat-stroked-button>Create Account</button>
-    </section>
+	<section id="login-form">
+		<form action="">
+			<app-login-select></app-login-select>
+			<app-login-user-card *ngIf="this.loginPageService.existSelectedUser; else storedUserData">
+			</app-login-user-card>
+			<ng-template #storedUserData>
+				<app-login-form></app-login-form>
+			</ng-template>
+			<div>
+				<mat-divider></mat-divider>
+				<button mat-stroked-button (click)="this.logIn()">Log in</button>
+			</div>
+		</form>
+	</section>
+	<section id="signin-suggestion">
+		<button mat-stroked-button>Create Account</button>
+	</section>
 </div>
 <div id="spinner" class="dark" *ngIf="this.showSpinner">
-    <mat-spinner></mat-spinner>
+	<mat-spinner></mat-spinner>
 </div>

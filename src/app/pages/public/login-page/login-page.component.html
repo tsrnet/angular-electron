@@ -2,11 +2,7 @@
 	<section id="login-form">
 		<form action="">
 			<app-login-select></app-login-select>
-			<app-login-user-card *ngIf="this.loginPageService.existSelectedUser; else storedUserData">
-			</app-login-user-card>
-			<ng-template #storedUserData>
-				<app-login-form></app-login-form>
-			</ng-template>
+			<app-login-user-card></app-login-user-card>
 			<div>
 				<mat-divider></mat-divider>
 				<button mat-stroked-button (click)="this.logIn()">Log in</button>

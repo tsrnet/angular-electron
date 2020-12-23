@@ -32,6 +32,11 @@ export class LoginPageService {
     }
 
 	constructor(private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
+		// this._userStore.getAll().then((users) => {
+		// 	users.forEach((user: User) => {
+		// 		this._userLocalStorage.store(user);
+		// 	})
+		// })
     }
 
     public deleteUser(storedUser: User): Promise<boolean> {

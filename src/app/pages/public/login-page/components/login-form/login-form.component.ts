@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LoginPageService } from '../../../login-page.service';
+import { LoginPageService } from '../../login-page.service';
 
 @Component({
 	selector: 'app-login-form',
@@ -42,7 +42,7 @@ export class LoginFormComponent {
 	
 	//view
 	showPassword: boolean = false;
-	step: 'out'|'in'|'void'|'full' = 'full';
+	step: 'out'|'in'|'void'|'full' = 'void';
 
 	get emailErrorMessage(): string {
 		if (this.email.hasError('required')) {

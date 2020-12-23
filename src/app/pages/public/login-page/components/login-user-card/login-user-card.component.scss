@@ -20,23 +20,27 @@ section#login-user-card {
             align-items: center;
             flex-direction: column;
 
-            div.user-card-provider-icon {
+            div.user-card-edit-icon {
                 position: absolute;
                 top: 0;
-                left: 0;
+                right: 0;
                 width: 32px;
                 height: 32px;
+                margin: 6px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin: 6px;
-                background-color: white;
+                background-color: #ffffff16;
                 border-radius: 50%;
                 box-shadow: 0px 0px 5px 0px var(--primary-dark);
-
-                img {
-                    width: 24px;
-                    height: 24px;
+                cursor: pointer;
+                
+                mat-icon {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 20px;
+                    color: var(--text-normal);
                 }
             }
 

@@ -40,7 +40,10 @@ export class LoginSelectComponent {
 	public onClick(storedUser?: User) {
 		if (storedUser !== undefined) {
 			if (this.loginPageService.existSelectedUser && this.loginPageService.selectedUser.userId == storedUser.userId) this.loginPageService.deselectUser();
-			else this.loginPageService.selectedUser = storedUser;
+			else {
+				this.loginPageService.userCardCanShow = true;
+				this.loginPageService.selectedUser = storedUser;
+			} 
 		}
 		this.emptyList = this.loginPageService.storedUsersIsEmpty;
 		this.isOpen = !this.isOpen;

@@ -42,7 +42,7 @@ export class LoginFormComponent {
 	
 	//view
 	showPassword: boolean = false;
-	step: 'out'|'in'|'void'|'full' = 'void';
+	step: 'out'|'in'|'void'|'full' = 'full';
 
 	get emailErrorMessage(): string {
 		if (this.email.hasError('required')) {
@@ -59,16 +59,15 @@ export class LoginFormComponent {
 	}
 
 	constructor(public loginPageService: LoginPageService) {
-
+		if (this.loginPageService.existSelectedUser) this.step = 'in';
 	}
 
 	public togglePasswordVisibility() {
 		this.showPassword = !this.showPassword;
-		this.fadeOut();
 	}
 
-	public fadeOut() {
-		this.step = 'out';
+	public setStep(step: 'out'|'in'|'void'|'full') {
+		this.step = step;
 	}
 
 

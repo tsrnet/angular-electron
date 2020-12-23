@@ -13,7 +13,7 @@ import { LoginPageService } from '../../login-page.service';
 	animations: [
 		trigger('openClose', [
 			state('open', style({
-				height: '263px'
+				height: '263px',
 			})),
 			state('closed', style({
 				height: '0px'
@@ -41,7 +41,6 @@ export class LoginSelectComponent {
 		if (storedUser !== undefined) {
 			if (this.loginPageService.existSelectedUser && this.loginPageService.selectedUser.userId == storedUser.userId) this.loginPageService.deselectUser();
 			else {
-				this.loginPageService.userCardCanShow = true;
 				this.loginPageService.selectedUser = storedUser;
 			} 
 		}
@@ -51,11 +50,13 @@ export class LoginSelectComponent {
 
 	public captureDoneEvent(event: any) {
 		if (event.toState === 'closed') event.element.style.display = 'none';
+		else if (event.toState === 'open') event.element.style.pointerEvents = 'all';
 		this.emptyList = this.loginPageService.storedUsersIsEmpty;
 	}
 
 	public captureStartEvent(event: any) {
 		if (event.fromState === 'closed') event.element.style.display = 'block';
+		else if (event.fromState === 'open') event.element.style.pointerEvents = 'none';
 	}
 
 	public deleteStoredUser(storedUser: User) {

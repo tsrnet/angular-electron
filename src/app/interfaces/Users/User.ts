@@ -22,19 +22,27 @@ export class User {
     lastSession?: string;
 
     public static New(userObject: UserObject|User): User {
-        return new this(userObject);
+        return new this().map(userObject);
     }
 
-    constructor(userObject: UserObject|User) {
+    public static NewEmpty(): User {
+        return new this();
+    }
+
+    private constructor() {
+    }
+    
+    private map(userObject: UserObject|User) {
         this.userId = userObject.userId;
         this.providerId = userObject.providerId;
-        this.email = userObject.email;
-        this.password = userObject.password;
-        this.userName = userObject.userName;
-        this.firstName = userObject.firstName;
-        this.lastName = userObject.lastName??null;
-        this.avatar = userObject.avatar??null;
-        this.lastSession = userObject.lastSession??null;
+        this.email = userObject.email.trim();
+        this.password = userObject.password.trim();
+        this.userName = userObject.userName.trim();
+        this.firstName = userObject.firstName.trim();
+        this.lastName = userObject.lastName?.trim()??null;
+        this.avatar = userObject.avatar?.trim()??null;
+        this.lastSession = userObject.lastSession?.trim()??null;
+        return this;
     }
 
     public getAvatar(): string {

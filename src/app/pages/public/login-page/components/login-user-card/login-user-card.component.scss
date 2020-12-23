@@ -1,6 +1,8 @@
 section#login-user-card {
     width: 100%;
     height: 180px;
+    position: relative;
+    z-index: 1;
 
     div.user-card {
         position: relative;

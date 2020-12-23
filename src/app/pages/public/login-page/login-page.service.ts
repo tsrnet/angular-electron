@@ -7,18 +7,6 @@ import { UserLocalStorageService, UserStoreService } from '../../../services';
 })
 export class LoginPageService {
 
-    /* User card and Uuser view logic */
-    private _canShow: boolean = true;
-    
-    public get userCardCanShow(): boolean {
-        return (this._canShow) ? this.existSelectedUser : this._canShow;
-    }
-    
-    public set userCardCanShow(canShow: boolean) {
-        this._canShow = canShow;
-    }
-    /* User card and Uuser view logic */
-
     public set selectedUser(newUser: User) {
         this._userLocalStorage.store(newUser, true);
     }

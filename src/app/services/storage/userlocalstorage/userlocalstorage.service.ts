@@ -131,7 +131,8 @@ export class UserLocalStorageService {
      * @param user User to find
      * @returns true or false
      */
-    private userExists(user: User): boolean {
+    public userExists(user: User): boolean {
+        if (user.userId == null) return false;
         return (this.getById(user.userId)) ? true : false;
     }
 

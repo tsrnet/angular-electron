@@ -8,36 +8,42 @@ div.page-wrapper {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+    background-color: var(--primary-dark);
 
-    section#login-form {
+    section#login, section#footer {
+        background-color: var(--primary);
+    }
+
+    section#login {
         width: 100%;
-        height: 78%;
-        border-radius: 3px;
+        height: 375px;
         padding: 25px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 3px;
 
-        form {
+        app-login-form, app-login-user-card {
+            display: block;
+            margin: 10px 0;
+        }
+
+        mat-divider {
+            border-top-color: var(--primary-dark);
+            margin: 5px 0;
+        }
+
+        div.buttons {
+            width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            user-select: none;
-
-            div {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-
-                button {
-                    margin-top: 15px;
-                    font-weight: 500;
-                }
-            }
+            align-items: flex-end;
         }
     }
 
-    section#signin-suggestion {
+    section#footer {
         width: 100%;
-        height: 19%;
+        height: 100%;
+        margin-top: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -50,8 +56,59 @@ div.page-wrapper {
     }
 }
 
+div.button-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 100px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    background-color: var(--blue-dark);
+    cursor: pointer;
+    
+    button {
+        width: 100%;
+        padding: 10px 15px;
+        border: 0;
+        outline: unset;
+        background-color: var(--blue);
+        color: var(--text-normal);
+        font-size: .875rem;
+        border-radius: 0 0 5px 5px;
+        font-weight: 500;
+        letter-spacing: .0107142857em;
+        cursor: pointer;
+    }
+}
+
+div.button-wrapper button:disabled:after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: not-allowed;
+    pointer-events: none;
+    animation: fade-in 150ms ease-in-out;
+    background-color: #00000073;
+}
+
+div.button-wrapper button:disabled {
+    cursor: not-allowed;
+}
+
+@keyframes fade-in {
+    0% {
+        background-color: #00000000;
+    }
+    100% {
+        background-color: #00000073;
+    }
+}
+
 div#spinner {
     position: absolute;
+    z-index: 2;
     top: 22px;
     width: 100%;
     height: calc(100% - 22px);
@@ -61,102 +118,8 @@ div#spinner {
     background-color: #8c8c8c41;
 }
 
-
-//THEMES
-
-.dark {
-    background-color: #23252E;
-
-    #login-form, #signin-suggestion {
-        background-color: #24404B;
-        
-        form {
-            .login-storedUsers-select {
-                button {
-                    background-color: #24343E;
-                    border-width: 1px 1px 1px 0;
-                    border-color: #23252E;
-                    border-radius: 0 5px 5px 0;
-                    border-style: solid;
-                }
-            }
-            ::ng-deep .mat-form-field-outline {
-                background-color: #24343E;
-            }
-
-            mat-icon {
-                color: #e6e6e6;
-            }
-
-            .mat-focused mat-icon {
-                color: white;
-            }
-            /* default and hover color */
-            ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-                color: #23252e;
-            }
-            
-            /* floating label color */
-            ::ng-deep .mat-form-field-appearance-outline .mat-form-field-label { 
-                color: #e6e6e6; 
-            }
-            
-            /* focused color */
-            ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-                color: #23252e;
-            }
-            
-            /* floating label color */
-            ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label { 
-                color: white; 
-            }
-
-            ::ng-deep .mat-select-value {
-                color: white;
-            }
-
-            input {
-                color: white;
-            }
-
-            mat-divider {
-                border-top-color:#23252e;
-            }
-
-            button {
-                background-color: #10ac84;
-                color: #e6e6e6;
-            }
-
-            div.stored-user-card {
-                width: 100%;
-                height: 180px;
-                border-radius: 5px;
-                margin-bottom: 25px;
-                border: 1px solid #23252E;
-                background-color: #24343E;
-                color: white;
-                
-                .user-avatar img {
-                    border-color: #23252E;
-                }
-
-                span {
-                    background-color: #23252E;
-                }
-            }
-        }
-    }
-    #signin-suggestion {
-        button {
-            background-color: #2e86de;
-            color: #e6e6e6;
-        }
-    }
-}
-
 #spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: #2DA183;
+    stroke: var(--border-dark);
 }
 
 

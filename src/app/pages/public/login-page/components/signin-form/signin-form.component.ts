@@ -1,23 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { User } from '../../../../../interfaces';
 import { LoginPageService } from '../../login-page.service';
 
 @Component({
-	selector: 'app-login-form',
-	templateUrl: './login-form.component.html',
-	styleUrls: ['./login-form.component.scss']
+  selector: 'app-signin-form',
+  templateUrl: './signin-form.component.html',
+  styleUrls: ['./signin-form.component.scss']
 })
-export class LoginFormComponent {
+export class SigninFormComponent {
 
 	//data
 	email = new FormControl('', [Validators.required, Validators.email]);
 	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
-	selectedUser: User ;
+	selectedUser: User;
 	
 	//view
 	showPassword: boolean = false;
-	public showErrors: boolean = false;
 
 	get emailErrorMessage(): string {
 		if (!this.email.untouched && this.email.hasError('required')) return 'You must enter a value';
@@ -31,14 +30,6 @@ export class LoginFormComponent {
 
 	constructor(public loginPageService: LoginPageService) {
 		this.selectedUser = User.NewEmpty();
-	}
-
-	public checkValidity() {
-		if (this.email.valid && this.password.valid) {
-			this.loginPageService.newUser = this.selectedUser;
-		} else {
-			this.loginPageService.newUser = null;
-		}
 	}
 
 	public togglePasswordVisibility() {

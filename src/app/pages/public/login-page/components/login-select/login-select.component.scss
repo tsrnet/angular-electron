@@ -93,7 +93,7 @@ section#login-stored-users-select {
             z-index: 1;
             font-size: 28px;
             transition: ease-in-out all 150ms;
-            color: var(--login-select-icon-color);
+            color: var(--text-dark-label);
         }
 
         mat-icon.select-icon.select-icon-active {

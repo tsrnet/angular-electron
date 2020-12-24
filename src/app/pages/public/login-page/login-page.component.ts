@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
 import { ElectronService } from '../../../services';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { LoginPageService } from './login-page.service';
 
 @Component({
@@ -10,13 +10,28 @@ import { LoginPageService } from './login-page.service';
 })
 export class LoginPageComponent {
 
+	@ViewChild('loginForm') loginForm: LoginFormComponent;
+
 	//view
 	showPassword: boolean = false;
 	showSpinner: boolean = false;
+	get isDisabled() {
+		let isDisabled = true;
+		if (this.loginPageService.existSelectedUser) isDisabled = false;
+		if (this.loginPageService.isNewUserValid) isDisabled = false;
+		return isDisabled;
+	}
 
 	constructor(private core: ElectronService, public loginPageService: LoginPageService) {}
 
+	onClick() {
+		console.log(this.loginForm);
+		if (!this.loginPageService.existSelectedUser && !this.loginPageService.isNewUserValid) this.loginForm.showErrors = true;
+		console.log(this.loginForm.showErrors);
+	}
+
 	logIn() {
+		return;
 		this.showSpinner = true;
 		this.core.authService.signIn(this.loginPageService.selectedUser.email, this.loginPageService.selectedUser.password).then(
 			(res: boolean) => {

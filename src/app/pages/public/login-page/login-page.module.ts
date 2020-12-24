@@ -13,9 +13,10 @@ import { TextWrapDirective } from '../../../directives/text-wrap/text-wrap.direc
 import { LoginUserCardComponent } from './components/login-user-card/login-user-card.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { ConfirmDialog } from './components/login-select/templates/dialog-confirm.component';
+import { SigninFormComponent } from './components/signin-form/signin-form.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, LoginSelectComponent, TextWrapDirective, LoginUserCardComponent, ConfirmDialog, LoginFormComponent ],
+  declarations: [LoginPageComponent, LoginSelectComponent, TextWrapDirective, LoginUserCardComponent, ConfirmDialog, LoginFormComponent, SigninFormComponent ],
   imports: [CommonModule, ComponentsModule, LoginPageRoutingModule, MaterialModule, ReactiveFormsModule],
   exports: [LoginPageService]
 })

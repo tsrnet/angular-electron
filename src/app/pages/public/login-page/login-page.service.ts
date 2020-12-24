@@ -7,6 +7,17 @@ import { UserLocalStorageService, UserStoreService } from '../../../services';
 })
 export class LoginPageService {
 
+    //LOGINFORM-LOGINPAGE USAGE
+    public newUser: User = null;
+
+    
+    public get isNewUserValid() {
+        return (this.newUser !== null);
+    }
+
+    //LOGINFORM-LOGINPAGE USAGE
+
+    //GLOBAL USAGE
     public set selectedUser(newUser: User) {
         this._userLocalStorage.store(newUser, true);
     }

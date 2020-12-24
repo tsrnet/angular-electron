@@ -1,21 +1,24 @@
-<div class="page-wrapper dark">
-	<section id="login-form">
-		<form action="">
-			<app-login-select></app-login-select>
-			<app-login-user-card *ngIf="this.loginPageService.selectedUser; else loginForm"></app-login-user-card>
-			<ng-template #loginForm>
-				<app-login-form></app-login-form>
-			</ng-template> 
-			<div>
-				<mat-divider></mat-divider>
-				<button mat-stroked-button (click)="this.logIn()">Log in</button>
+<div class="page-wrapper dark-theme">
+	<section id="login">
+		<app-login-select></app-login-select>
+		<ng-container *ngIf="this.loginPageService.selectedUser; else loginForm">
+			<app-login-user-card></app-login-user-card>
+		</ng-container>
+		<ng-template #loginForm>
+			<app-login-form #loginForm></app-login-form>
+		</ng-template>
+		<mat-divider></mat-divider>
+		<div class="buttons">
+			<div class="button-wrapper" matRipple [matRippleDisabled]="this.isDisabled" (click)="this.onClick()">
+				<button [disabled]="this.isDisabled" (click)="this.logIn()">Log in</button>
 			</div>
-		</form>
+		</div>
 	</section>
-	<section id="signin-suggestion">
+	<section id="footer">
 		<button mat-stroked-button>Create Account</button>
 	</section>
 </div>
+
 <div id="spinner" class="dark" *ngIf="this.showSpinner">
 	<mat-spinner></mat-spinner>
 </div>

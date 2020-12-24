@@ -8,7 +8,8 @@ section#login-stored-users-select {
         width: inherit;
         height: inherit;
         padding: 0 6px;
-        
+        padding-right: 46px;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -22,18 +23,27 @@ section#login-stored-users-select {
         cursor: pointer;
 
         span.select-value-placeholder {
-            font-size: 15px;
-            font-weight: 500;
-            margin-left: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--login-select-font-color);
+            // margin-left: 10px;
+            // font-size: 15px;
+            // font-weight: 500;
+            // white-space: nowrap;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            // color: var(--login-select-font-color);
+            margin-left: 6px;
+            color: var(--text-dark-label);
+            line-height: 17px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: color 100ms ease-in-out;
         }
 
         div.select-value {
+            position: relative;
             display: inherit;
             align-items: inherit;
+            width: 100%;
 
             img.select-value-avatar {
                 height: 48px;
@@ -47,15 +57,10 @@ section#login-stored-users-select {
     
             span.select-value-name {
                 height: 48px;
-                max-width: 244px;
-                padding: 0 30px;
-                transform: translateX(-24px);
+                line-height: 47px;
+                padding: 0 13px 0 8px;
 
-                display: inherit;
-                align-items: inherit;
-
-                font-size: 15px;
-                font-weight: 100;
+                font-size: 14px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -65,6 +70,18 @@ section#login-stored-users-select {
                 background-color: var(--primary-dark);
                 color: var(--login-select-font-color);
             }
+            
+        }
+
+        div.select-value::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 28px;
+            width: 20px;
+            height: 100%;
+            pointer-events: none;
+            background-color: var(--primary-dark);
         }
 
 
@@ -72,7 +89,7 @@ section#login-stored-users-select {
             position: absolute;
             width: auto;
             height: auto;
-            right: 10px;
+            right: 16px;
             z-index: 1;
             font-size: 28px;
             transition: ease-in-out all 150ms;

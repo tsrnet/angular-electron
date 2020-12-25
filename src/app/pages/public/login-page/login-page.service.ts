@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../../interfaces';
-import { UserLocalStorageService, UserStoreService } from '../../../services';
+import { AuthError, AuthService, UserLocalStorageService, UserStoreService } from '../../../services';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,6 +19,7 @@ export class LoginPageService {
 
     //GLOBAL USAGE
     public set selectedUser(newUser: User) {
+        this.newUser = null;
         this._userLocalStorage.store(newUser, true);
     }
 
@@ -42,7 +43,7 @@ export class LoginPageService {
         return this._userLocalStorage.isEmpty
     }
 
-	constructor(private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
+	constructor(private _authService: AuthService, private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
     }
 
     public deleteUser(storedUser: User): Promise<boolean> {
@@ -55,6 +56,30 @@ export class LoginPageService {
 
     public deselectUser() {
         this._userLocalStorage.deletePreselectedUser();
+    }
+
+    public logWithEmailAndPassword() {
+        let user = (this.existSelectedUser) ? this.selectedUser : this.newUser;
+        return new Promise<boolean>((resolve, rejected) => {
+            this._authService.logIn(user.email, user.password).then(
+                (res: boolean) => {
+                    if (res) {
+                        this._userStore.getByEmail(user.email).then((retrievedUser: User) => {
+                            if (user !== null) {
+                                this.selectedUser = retrievedUser;
+                                resolve(true);
+                            } else resolve(false);
+                        })
+                    } else rejected(this._authService.getError((this.existSelectedUser) ? 'auth/stored-user-not-found' : 'auth/user-not-found'));
+                }, 
+                (err: AuthError) => {
+                    let error = err;
+                    if (error.code == 'auth/user-not-found') error = this._authService.getError((this.existSelectedUser) ? 'auth/stored-user-not-found' : 'auth/user-not-found');
+                    rejected(error);
+                }
+            ).catch(((err) => rejected(err)))
+
+        })
     }
 
 

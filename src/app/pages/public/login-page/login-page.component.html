@@ -1,17 +1,16 @@
 <div class="page-wrapper dark-theme">
 	<section id="login">
 		<app-login-select></app-login-select>
-		<ng-container *ngIf="this.loginPageService.selectedUser; else loginForm">
+		<ng-container *ngIf="this.loginPageService.selectedUser; else loginFormTemplate">
 			<app-login-user-card></app-login-user-card>
 		</ng-container>
-		<ng-template #loginForm>
+		<ng-template #loginFormTemplate>
 			<app-login-form #loginForm></app-login-form>
 		</ng-template>
 		<mat-divider></mat-divider>
 		<div class="buttons">
-			<div class="button-wrapper" matRipple [matRippleDisabled]="this.isDisabled" (click)="this.onClick()">
-				<button [disabled]="this.isDisabled" (click)="this.logIn()">Log in</button>
-			</div>
+			<tsr-button matRipple [disabled]="this.isDisabled" [matRippleDisabled]="this.isDisabled"
+				(onDisabledClick)="this.loginForm.showErrors = true" (onClick)="this.logIn()">Log in</tsr-button>
 		</div>
 	</section>
 	<section id="footer">

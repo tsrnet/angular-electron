@@ -17,50 +17,34 @@ export class UserStoreService {
 			(reason) => {
 				console.error('Error:', reason);
 			});
-
-		// return new Promise<any>((res, err) => {
-		// 	this.fs.collection('users').doc(newUser.userId).set(newUser).then(res => { }, err => err(err));
-		// });
-	}
-
-	public async getAll(): Promise<User[]> {
-		let users: User[] = await new Promise((resolve, error) => {
-			this.fs.collection('users').ref.get().then(
-			(res) => {
-				let users: User[] = [];
-				if (!res.empty) {
-					res.forEach(user => {
-						users.push(User.New(user.data() as UserObject));
-						// console.log(user.id, user.data())
-					})
-				} 
-				resolve(users);
-			},
-			(err) => err(err));
-		});
-		return users;
-		
-		// await this.fs.collection('users').ref.get().then((snapshot) => {
-		// 	if (!snapshot.empty) {
-		// 		snapshot.forEach(user => {
-		// 			console.log(user.id, user.data())
-		// 		})
-		// 	}
-		// });
 	}
 
 	public getById(id: string) {
-		this.fs.collection('users').doc(id).get().subscribe((snapshot) => {
-			if (snapshot.exists) {
-				console.log(snapshot.data);
-			} else console.log(snapshot);
-		});
+		return new Promise<User>((resolve, error) => {
+			this.fs.collection('users').ref.doc(id).get().then((snapshot) => {
+				let user: User = (!snapshot.exists) ? null : User.New((snapshot.data() as UserObject));
+				resolve(user);
+			}).catch((reason) => error(reason));
+		})
+	}
+
+	public getByEmail(email: string) {
+		return new Promise<User>((resolve, error) => {
+			this.fs.collection('users').ref.where('email', '==', email).get().then((snapshot) => {
+				let user: User = (snapshot.empty) ? null : User.New((snapshot.docs[0].data() as UserObject));
+				resolve(user);
+			}).catch((reason) => error(reason));
+		})
 	}
 
 	public deleteById(id: string) {
-		this.fs.collection('users').doc(id).delete().then((snapshot) => {
-			console.log(snapshot);
-		});
+		return new Promise<boolean>((resolve, error) => {
+			this.fs.collection('users').ref.doc(id).delete().then((snapshot) => {
+				console.log(snapshot);
+			}).catch((reason) => {
+				console.log(reason);
+			});
+		})
 	}
 
 }

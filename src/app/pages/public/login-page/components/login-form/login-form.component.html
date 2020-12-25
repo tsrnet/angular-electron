@@ -7,7 +7,7 @@
         <input [(ngModel)]="this.selectedUser.email" (ngModelChange)="this.checkValidity()" type="text" [formControl]="email" aria-label="electronic email">
     </div>
 
-    <div [ngClass]="{'input-label': true, 'input-error': (!this.password.untouched && this.password.invalid)}">
+    <div [ngClass]="{'input-label': true, 'input-error': ((!this.password.untouched || this.showErrors) && this.password.invalid)}">
         <div class="label-field">
             <label for="password">password</label>
             <span>{{this.passwordErrorMessage}}</span>

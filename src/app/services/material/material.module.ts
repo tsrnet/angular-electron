@@ -10,6 +10,7 @@ import {MatRippleModule} from '@angular/material/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDialogModule,
     DragDropModule,
     MatTooltipModule,
+    MatSnackBarModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -35,6 +37,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatCardModule,
     MatDialogModule,
     MatRippleModule,
+    MatSnackBarModule,
     DragDropModule,
     MatProgressSpinnerModule,
     MatTooltipModule

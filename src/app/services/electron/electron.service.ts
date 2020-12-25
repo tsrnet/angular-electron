@@ -15,7 +15,6 @@ export class ElectronService {
 	childProcess: typeof childProcess;
 	fs: typeof fs;
 	screen: any;
-	authService: AuthService;
 	appConfig: typeof AppConfig;
 
 	viewReady: boolean = false;
@@ -28,8 +27,7 @@ export class ElectronService {
 		return (this.isElectron) ? this.remote.getCurrentWindow() : null;
 	}
 
-	constructor(authService: AuthService) {
-		this.authService = authService;
+	constructor() {
 		this.appConfig = AppConfig;
 
 		if (this.isElectron) {

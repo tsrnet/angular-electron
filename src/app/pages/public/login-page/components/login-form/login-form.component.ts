@@ -17,15 +17,15 @@ export class LoginFormComponent {
 	
 	//view
 	showPassword: boolean = false;
-	public showErrors: boolean = false;
+	showErrors: boolean = false;
 
 	get emailErrorMessage(): string {
-		if (!this.email.untouched && this.email.hasError('required')) return 'You must enter a value';
+		if ((!this.email.untouched || this.showErrors) && this.email.hasError('required')) return 'You must enter a value';
 		return this.email.hasError('email') ? 'Not a valid email' : '';
 	}
 
 	get passwordErrorMessage(): string {
-		if (!this.password.untouched && this.password.hasError('required')) return 'You must enter a value';
+		if ((!this.password.untouched || this.showErrors) && this.password.hasError('required')) return 'You must enter a value';
 		return this.password.hasError('pattern') ? 'Min 6 characters, numbers & letters' : '';
 	}
 

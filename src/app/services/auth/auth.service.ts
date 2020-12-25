@@ -2,6 +2,19 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
+export enum AuthErrorMessages {
+	"auth/default" = "An error occurred while trying to log in with this account.",
+	"auth/user-not-found" = "This account doesn't exist. Enter a different account or get a new one.",
+	"auth/stored-user-not-found" = "This stored account doesn't exist. Enter a different account or get a new one.",
+	"auth/user-disabled" = "The user account has been disabled by an administrator.",
+	"auth/wrong-password" = "The password is invalid."
+}
+
+export interface AuthError {
+	code: string;
+	message: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -15,15 +28,28 @@ export class AuthService {
 		});
 	}
 
-	async signIn(email: string, password: string) {
-		try {
-			if (!email || !password) throw new Error('Invalid email and/or password');
-			await this.auth.signInWithEmailAndPassword(email, password);
-			return true;
-		} catch (error) {
-			console.log('Sign in failed', error);
-			return false;
-		}
+	public logIn(email: string, password: string): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			this.auth.signInWithEmailAndPassword(email, password).then(
+				((res) => resolve(true)),
+				((err) => reject(this.getError(err.code)))
+			);
+		});
+	}
+
+	public signIn(email: string, password: string): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			this.auth.signInWithEmailAndPassword(email, password).then(
+				((res) => resolve(true)),
+				((err) => reject(this.getError(err.code)))
+			);
+		});
+	}
+
+	public getError(errorCode: string): AuthError {
+		let error: AuthError = { code: 'auth/default', message: AuthErrorMessages['auth/default']};
+		if (AuthErrorMessages[errorCode] !== undefined) error = { code: errorCode, message: AuthErrorMessages[errorCode]};
+		return error;
 	}
 
 	async signOut() {

@@ -1,0 +1,36 @@
+div.button-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 100px;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: var(--blue-dark);
+    cursor: pointer;
+    
+    div.disabled {
+        position: absolute;
+        background-color: #00000073;
+        width: 200%;
+        height: 200%;
+        cursor: not-allowed;
+        border-radius: 5px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 10px 15px;
+        border: 0;
+        outline: unset;
+        background-color: var(--blue);
+        color: var(--text-normal);
+        font-size: .875rem;
+        border-radius: 5px;
+        font-weight: 500;
+        letter-spacing: .0107142857em;
+        cursor: pointer;
+    }
+}

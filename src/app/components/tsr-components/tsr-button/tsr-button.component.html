@@ -1,0 +1,4 @@
+<div class="button-wrapper" (click)="this.manageClick()">
+    <div class="disabled" *ngIf="this.disabled"></div>
+    <button [disabled]="this.disabled"><ng-content></ng-content></button>
+</div>

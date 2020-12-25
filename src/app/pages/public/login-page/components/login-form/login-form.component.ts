@@ -13,7 +13,9 @@ export class LoginFormComponent {
 	//data
 	email = new FormControl('', [Validators.required, Validators.email]);
 	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
-	selectedUser: User ;
+	get selectedUser(): User {
+		return (this.loginPageService.existSelectedUser) ? this.loginPageService.selectedUser : User.NewEmpty();
+	}
 	
 	//view
 	showPassword: boolean = false;
@@ -30,7 +32,6 @@ export class LoginFormComponent {
 	}
 
 	constructor(public loginPageService: LoginPageService) {
-		this.selectedUser = User.NewEmpty();
 	}
 
 	public checkValidity() {

@@ -1,12 +1,7 @@
 <div class="page-wrapper dark-theme">
 	<section id="login">
 		<app-login-select></app-login-select>
-		<ng-container *ngIf="this.loginPageService.selectedUser; else loginFormTemplate">
-			<app-login-user-card></app-login-user-card>
-		</ng-container>
-		<ng-template #loginFormTemplate>
-			<app-login-form #loginForm></app-login-form>
-		</ng-template>
+		<app-login-user-card #userCard></app-login-user-card>
 		<mat-divider></mat-divider>
 		<div class="buttons">
 			<tsr-button matRipple [disabled]="this.isDisabled" [matRippleDisabled]="this.isDisabled"

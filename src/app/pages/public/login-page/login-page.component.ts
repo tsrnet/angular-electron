@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { AuthError, AuthErrorCodes } from '../../../services';
-import { LoginFormComponent } from './components/login-form/login-form.component';
+import { LoginUserCardComponent } from './components/login-user-card/login-user-card.component';
 import { LoginPageService } from './login-page.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { LoginPageService } from './login-page.service';
 })
 export class LoginPageComponent {
 
-	@ViewChild('loginForm') loginForm: LoginFormComponent;
+	@ViewChild('userCard') userCard: LoginUserCardComponent;
 
 	//view
 	showPassword: boolean = false;
@@ -26,7 +26,7 @@ export class LoginPageComponent {
 	constructor(public loginPageService: LoginPageService, private _snackBar: MatSnackBar) { }
 
 	onClick() {
-		if (!this.loginPageService.existSelectedUser && !this.loginPageService.isNewUserValid) this.loginForm.showErrors = true;
+		if (!this.loginPageService.existSelectedUser && !this.loginPageService.isNewUserValid) this.userCard.loginForm.showErrors = true;
 	}
 
 	logIn() {
@@ -41,7 +41,7 @@ export class LoginPageComponent {
 			(err: AuthError) => {
 				this.showSpinner = false;
 				this.openSnackBar(err.message, 'OK');
-				if (err.code == AuthErrorCodes.WRONG_PASSWORD) this.loginForm.editUserPassword();
+				if (err.code == AuthErrorCodes.WRONG_PASSWORD) this.userCard.loginForm.editUserPassword();
 			}
 		)
 	}

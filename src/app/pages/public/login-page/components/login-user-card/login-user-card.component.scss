@@ -99,4 +99,12 @@ section#login-user-card {
             }
         }
     }
+
+    app-login-form {
+        display: block;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        transform: translateX(-115%);
+    }
 }

@@ -79,6 +79,7 @@ export class UserLocalStorageService {
 
     public deletePreselectedUser() {
         this.preselectedId = null;
+        this._preselectedUser = null;
         this.updateLocalStorage();
     }
 

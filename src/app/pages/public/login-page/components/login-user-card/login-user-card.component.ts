@@ -33,6 +33,8 @@ import { LoginFormComponent } from '../login-form/login-form.component';
 
 export class LoginUserCardComponent {
 
+	
+
 	@ViewChild('loginForm') loginForm: LoginFormComponent;
 	
 	constructor(public loginPageService: LoginPageService) {}

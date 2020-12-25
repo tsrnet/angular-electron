@@ -93,12 +93,12 @@ div#spinner {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #d5f4ff41;
+    background-color: #00000070;
     backdrop-filter: blur(0.05rem);
 }
 
 #spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: #1B1B1B;
+    stroke: #b5e4ff;
 }
 
 

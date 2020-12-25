@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { AuthError } from '../../../services';
+import { AuthError, AuthErrorCodes } from '../../../services';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { LoginPageService } from './login-page.service';
 
@@ -41,6 +41,7 @@ export class LoginPageComponent {
 			(err: AuthError) => {
 				this.showSpinner = false;
 				this.openSnackBar(err.message, 'OK');
+				if (err.code == AuthErrorCodes.WRONG_PASSWORD) this.loginForm.editUserPassword();
 			}
 		)
 	}

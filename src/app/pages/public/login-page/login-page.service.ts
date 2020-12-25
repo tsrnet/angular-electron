@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../../interfaces';
-import { AuthError, AuthService, UserLocalStorageService, UserStoreService } from '../../../services';
+import { AuthError, AuthErrorCodes, AuthService, UserLocalStorageService, UserStoreService } from '../../../services';
 
 @Injectable({
 	providedIn: 'root'
@@ -70,11 +70,11 @@ export class LoginPageService {
                                 resolve(true);
                             } else resolve(false);
                         })
-                    } else rejected(this._authService.getError((this.existSelectedUser) ? 'auth/stored-user-not-found' : 'auth/user-not-found'));
+                    } else rejected(this._authService.getError((this.existSelectedUser) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND));
                 }, 
                 (err: AuthError) => {
                     let error = err;
-                    if (error.code == 'auth/user-not-found') error = this._authService.getError((this.existSelectedUser) ? 'auth/stored-user-not-found' : 'auth/user-not-found');
+                    if (error.code == AuthErrorCodes.USER_NOT_FOUND) error = this._authService.getError((this.existSelectedUser) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND);
                     rejected(error);
                 }
             ).catch(((err) => rejected(err)))

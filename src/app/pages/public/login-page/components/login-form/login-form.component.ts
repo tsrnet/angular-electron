@@ -45,4 +45,8 @@ export class LoginFormComponent {
 		this.showPassword = !this.showPassword;
 	}
 
+	public editUserPassword() {
+		
+	}
+
 }

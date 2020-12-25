@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
+export enum AuthErrorCodes {
+	DEFAULT = "auth/default",
+	USER_NOT_FOUND = "auth/user-not-found",
+	STORED_USER_NOT_FOUND = "auth/user-not-found",
+	USER_DISABLED = "auth/user-disabled",
+	WRONG_PASSWORD = "auth/wrong-password"
+}
+
 export enum AuthErrorMessages {
 	"auth/default" = "An error occurred while trying to log in with this account.",
 	"auth/user-not-found" = "This account doesn't exist. Enter a different account or get a new one.",

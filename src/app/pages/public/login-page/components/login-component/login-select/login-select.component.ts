@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from './templates/dialog-confirm.component';
@@ -29,12 +29,20 @@ import { LoginPageService } from '../../../login-page.service';
 })
 
 export class LoginSelectComponent {
+
+	@Input('data') users: User[] = [];
+	@Input() disabled: boolean = false;
+
+	@Input() value: User;
+	@Output() valueChange = new EventEmitter<User>();
+	
+	@Output() onDelete: EventEmitter<User> = new EventEmitter<User>();
 	
 	//select functionality
 	public isOpen: boolean = false;
 	public emptyList: boolean = true;
 	
-	constructor(public electron: ElectronService, public loginPageService: LoginPageService, public dialog: MatDialog) {
+	constructor(public loginPageService: LoginPageService, public dialog: MatDialog) {
 	}
 	
 	public onClick(storedUser?: User) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { User } from '../../../../../interfaces';
-import { LoginPageService } from '../../login-page.service';
+import { User } from '../../../../../../interfaces';
+import { LoginPageService } from '../../../login-page.service';
 
 @Component({
 	selector: 'app-login-form',
@@ -14,7 +14,7 @@ export class LoginFormComponent {
 	email = new FormControl('', [Validators.required, Validators.email]);
 	password = new FormControl('', [Validators.required, Validators.pattern('^.{6,}$')]);
 	get selectedUser(): User {
-		return (this.loginPageService.existSelectedUser) ? this.loginPageService.selectedUser : User.NewEmpty();
+		return this.loginPageService.selectedUser;
 	}
 	
 	//view
@@ -31,14 +31,14 @@ export class LoginFormComponent {
 		return this.password.hasError('pattern') ? 'Min 6 characters, numbers & letters' : '';
 	}
 
-	constructor(public loginPageService: LoginPageService) {
-	}
+	constructor(public loginPageService: LoginPageService) {}
 
 	public checkValidity() {
+		if (this.email.untouched && this.password.untouched) return;
 		if (this.email.valid && this.password.valid) {
-			this.loginPageService.newUser = this.selectedUser;
+			this.loginPageService.isUserValid = true;
 		} else {
-			this.loginPageService.newUser = null;
+			this.loginPageService.isUserValid = false;
 		}
 	}
 

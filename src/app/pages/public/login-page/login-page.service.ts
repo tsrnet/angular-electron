@@ -7,36 +7,30 @@ import { AuthError, AuthErrorCodes, AuthService, UserLocalStorageService, UserSt
 })
 export class LoginPageService {
 
-    //LOGINFORM-LOGINPAGE USAGE
-    public newUser: User = null;
-
-    
-    public get isNewUserValid() {
-        return (this.newUser !== null);
-    }
-
-    //LOGINFORM-LOGINPAGE USAGE
-
     //GLOBAL USAGE
-    public set selectedUser(newUser: User) {
-        this.newUser = null;
-        this._userLocalStorage.store(newUser, true);
-    }
 
-    public get selectedUser(): User {
-        return this._userLocalStorage.preselectedUser;
+    private _selectedUser: User = null;
+    public isUserValid: boolean = null;
+
+    public set selectedUser(newUser: User) {
+        this._selectedUser = newUser;
+        if (this._userLocalStorage.userExists(newUser)) this._userLocalStorage.store(newUser, true);
     }
 
     public get existSelectedUser(): boolean {
-        return (this.selectedUser !== null) ? true : false;
+        return (this._selectedUser !== null);
+    }
+
+    public get selectedUser(): User {
+        return this._selectedUser;
+    }
+
+    public get isSelectedUserStored(): boolean {
+        return (this._userLocalStorage.userExists(this.selectedUser));
     }
     
     public get storedUsers() {
         return this._userLocalStorage.users;
-    }
-
-    public get storedUsersLength() {
-        return this._userLocalStorage.length;
     }
 
     public get storedUsersIsEmpty() {
@@ -44,9 +38,16 @@ export class LoginPageService {
     }
 
 	constructor(private _authService: AuthService, private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
+        // this._userStore.getAll().then((users) => {
+		// 	users.forEach((user: User) => {                
+		// 		this._userLocalStorage.store(user);
+        //     })
+		// })
+        this._selectedUser = (this._userLocalStorage.existSelectedUser) ? this._userLocalStorage.selectedUser : User.NewEmpty();
+        this.isUserValid = this.isSelectedUserStored;
     }
 
-    public deleteUser(storedUser: User): Promise<boolean> {
+    public deleteUser(storedUser: User): boolean {
         return this._userLocalStorage.delete(storedUser);
     }
 
@@ -55,26 +56,27 @@ export class LoginPageService {
     }
 
     public deselectUser() {
+        this._selectedUser = User.NewEmpty();
+        this.isUserValid = false;
         this._userLocalStorage.deletePreselectedUser();
     }
 
     public logWithEmailAndPassword() {
-        let user = (this.existSelectedUser) ? this.selectedUser : this.newUser;
         return new Promise<boolean>((resolve, rejected) => {
-            this._authService.logIn(user.email, user.password).then(
+            this._authService.logIn(this._selectedUser.email, this._selectedUser.password).then(
                 (res: boolean) => {
                     if (res) {
-                        this._userStore.getByEmail(user.email).then((retrievedUser: User) => {
-                            if (user !== null) {
+                        this._userStore.getByEmail(this._selectedUser.email).then((retrievedUser: User) => {
+                            if (this._selectedUser !== null) {
                                 this.selectedUser = retrievedUser;
                                 resolve(true);
                             } else resolve(false);
                         })
-                    } else rejected(this._authService.getError((this.existSelectedUser) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND));
+                    } else rejected(this._authService.getError((this.isSelectedUserStored) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND));
                 }, 
                 (err: AuthError) => {
                     let error = err;
-                    if (error.code == AuthErrorCodes.USER_NOT_FOUND) error = this._authService.getError((this.existSelectedUser) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND);
+                    if (error.code == AuthErrorCodes.USER_NOT_FOUND) error = this._authService.getError((this.isSelectedUserStored) ? AuthErrorCodes.STORED_USER_NOT_FOUND : AuthErrorCodes.USER_NOT_FOUND);
                     rejected(error);
                 }
             ).catch(((err) => rejected(err)))

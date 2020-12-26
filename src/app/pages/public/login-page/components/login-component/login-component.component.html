@@ -1,0 +1,12 @@
+<div class="login-component-wrapper dark-theme">
+    <app-login-user-select #userSelect></app-login-user-select>
+    <section id="user-data">
+        <app-login-form #loginForm></app-login-form>
+        <app-login-user-card #userCard></app-login-user-card>
+    </section>
+    <mat-divider></mat-divider>
+    <div class="buttons">
+        <tsr-button matRipple [disabled]="!this.loginPageService.isUserValid" [matRippleDisabled]="!this.loginPageService.isUserValid"
+            (onDisabledClick)="this.loginForm.showErrors = true" (onClick)="this.logIn()">Log in</tsr-button>
+    </div>
+</div>

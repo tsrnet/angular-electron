@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { AuthError, AuthErrorCodes } from '../../../services';
-import { LoginUserCardComponent } from './components/login-user-card/login-user-card.component';
+import { LoginUserCardComponent } from './components/login-component/login-user-card/login-user-card.component';
 import { LoginPageService } from './login-page.service';
 
 @Component({
@@ -16,17 +16,11 @@ export class LoginPageComponent {
 	//view
 	showPassword: boolean = false;
 	showSpinner: boolean = false;
-	get isDisabled() {
-		let isDisabled = true;
-		if (this.loginPageService.existSelectedUser) isDisabled = false;
-		if (this.loginPageService.isNewUserValid) isDisabled = false;
-		return isDisabled;
-	}
 
 	constructor(public loginPageService: LoginPageService, private _snackBar: MatSnackBar) { }
 
 	onClick() {
-		if (!this.loginPageService.existSelectedUser && !this.loginPageService.isNewUserValid) this.userCard.loginForm.showErrors = true;
+		if (!this.loginPageService.isUserValid) this.userCard.loginForm.showErrors = true;
 	}
 
 	logIn() {
@@ -53,15 +47,7 @@ export class LoginPageComponent {
 		});
 	}
 
-
 }
-// public retrieveStoredUsers() {
-// 	this.userStore.getAll().then((users) => {
-// 		users.forEach((user: User) => {
-// 			this.storedUsers.store(user);
-// 		})
-// 	})
-// }
 
 // logout() {
 // 	this.core.authService.signOut().then(

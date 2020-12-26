@@ -1,6 +1,6 @@
 <section id="login-stored-users-select" class="dark-theme">
     <div matRipple id="select-box" (click)="this.onClick()">
-        <div class="select-value" *ngIf="this.loginPageService.existSelectedUser; else noSelectedUser">
+        <div class="select-value" *ngIf="this.loginPageService.isSelectedUserStored; else noSelectedUser">
             <img class="select-value-avatar" [src]="this.loginPageService.selectedUser.getAvatar()" alt="selected-user-avatar">
             <span class="select-value-name">{{this.loginPageService.selectedUser.getFullName()}}</span>
         </div>

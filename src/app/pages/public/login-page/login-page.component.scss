@@ -10,37 +10,20 @@ div.page-wrapper {
     overflow: hidden;
     background-color: var(--primary-dark);
 
-    section#login, section#footer {
+    section#login-section, section#footer {
         background-color: var(--primary);
     }
 
-    section#login {
+    section#login-section {
+        position: relative;
         width: 100%;
         height: 375px;
         padding: 25px;
-        display: flex;
-        flex-direction: column;
         border-radius: 3px;
 
-        app-login-form, app-login-user-card {
+        app-login-component {
             display: block;
-            margin: 10px 0;
-        }
-
-        mat-divider {
-            border-top-color: var(--primary-dark);
-            margin: 5px 0;
-        }
-
-        div.buttons {
-            width: 100%;
             height: 100%;
-            display: flex;
-            align-items: flex-end;
-
-            tsr-button {
-                width: 100%;
-            }
         }
     }
 

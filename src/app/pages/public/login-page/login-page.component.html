@@ -1,12 +1,6 @@
 <div class="page-wrapper dark-theme">
-	<section id="login">
-		<app-login-select></app-login-select>
-		<app-login-user-card #userCard></app-login-user-card>
-		<mat-divider></mat-divider>
-		<div class="buttons">
-			<tsr-button matRipple [disabled]="this.isDisabled" [matRippleDisabled]="this.isDisabled"
-				(onDisabledClick)="this.loginForm.showErrors = true" (onClick)="this.logIn()">Log in</tsr-button>
-		</div>
+	<section id="login-section">
+		<app-login-component></app-login-component>
 	</section>
 	<section id="footer">
 		<button mat-stroked-button>Create Account</button>

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { User } from '../../../../../interfaces';
-import { ElectronService } from '../../../../../services';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from './templates/dialog-confirm.component';
-import { LoginPageService } from '../../login-page.service';
+import { ElectronService } from '../../../../../../services';
+import { User } from '../../../../../../interfaces';
+import { LoginPageService } from '../../../login-page.service';
 
 @Component({
-	selector: 'app-login-select',
+	selector: 'app-login-user-select',
 	templateUrl: './login-select.component.html',
 	styleUrls: ['./login-select.component.scss'],
 	animations: [
@@ -39,12 +39,10 @@ export class LoginSelectComponent {
 	
 	public onClick(storedUser?: User) {
 		if (storedUser !== undefined) {
-			if (this.loginPageService.existSelectedUser && this.loginPageService.selectedUser.userId == storedUser.userId) this.loginPageService.deselectUser();
-			else {
-				this.loginPageService.selectedUser = storedUser;
-			} 
+			if (this.loginPageService.selectedUser.userId == storedUser.userId) this.loginPageService.deselectUser();
+			else this.loginPageService.selectedUser = storedUser;
+			this.emptyList = this.loginPageService.storedUsersIsEmpty;
 		}
-		this.emptyList = this.loginPageService.storedUsersIsEmpty;
 		this.isOpen = !this.isOpen;
 	}
 
@@ -62,9 +60,10 @@ export class LoginSelectComponent {
 	public deleteStoredUser(storedUser: User) {
 		const dialogRef = this.dialog.open(ConfirmDialog);
 		dialogRef.afterClosed().subscribe((result: boolean) => {
-			if (result) this.loginPageService.deleteUser(storedUser).then((res: boolean) => {
+			if (result) {
+				this.loginPageService.deleteUser(storedUser)
 				if (this.loginPageService.storedUsersIsEmpty) this.isOpen = false;
-			});
+			} 
 		});
 	}
 

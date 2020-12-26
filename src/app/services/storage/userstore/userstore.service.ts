@@ -19,6 +19,16 @@ export class UserStoreService {
 			});
 	}
 
+	public getAll() {
+		return new Promise<User[]>((resolve, error) => {
+			this.fs.collection('users').ref.get().then((snapshot) => {
+				let users: User[] = [];
+				snapshot.docs.forEach(((user) => users.push(User.New(user.data() as UserObject))))
+				resolve(users);
+			}).catch((reason) => error(reason));
+		})
+	}
+
 	public getById(id: string) {
 		return new Promise<User>((resolve, error) => {
 			this.fs.collection('users').ref.doc(id).get().then((snapshot) => {

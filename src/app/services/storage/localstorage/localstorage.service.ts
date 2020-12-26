@@ -7,23 +7,23 @@ export class LocalStorageService {
 
     constructor() {}
     
-    public add(propertyName: string, propertyValue: any, json: boolean = false): LocalStorageService {
-        let pValue: any = (json) ? JSON.stringify(propertyValue) : propertyValue;
-        localStorage.setItem(propertyName, pValue);
+    public add(key: string, value: any, json: boolean = false): LocalStorageService {
+        let pValue: any = (json) ? JSON.stringify(value) : value;
+        localStorage.setItem(key, pValue);
         return this;
     }
 
-    public get(propertyName: string, json: boolean = false): any {
-        let item = localStorage.getItem(propertyName);
+    public get(key: string, json: boolean = false): any {
+        let item = localStorage.getItem(key);
         return (item != 'undefined') ? ((json) ? JSON.parse(item) : item) : null;
     }
 
-    public exist(propertyName: string): boolean {
-        return (this.get(propertyName)) ? true : false;
+    public exist(key: string): boolean {
+        return (this.get(key) !== null);
     }
 
-    public remove(propertyName: string): LocalStorageService {
-        localStorage.removeItem(propertyName);
+    public remove(key: string): LocalStorageService {
+        localStorage.removeItem(key);
         return this;
     }
 

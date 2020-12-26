@@ -13,8 +13,8 @@ export class UserObject {
 export class User {
     userId: number;
     providerId: string;
-    email: string;
-    password: string;
+    email: string = '';
+    password: string = '';
     userName: string;
     firstName: string;
     lastName?: string;

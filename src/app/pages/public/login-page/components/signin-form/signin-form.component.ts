@@ -29,7 +29,7 @@ export class SigninFormComponent {
 	}
 
 	constructor(public loginPageService: LoginPageService) {
-		this.selectedUser = User.NewEmpty();
+		this.selectedUser = User.New();
 	}
 
 	public togglePasswordVisibility() {

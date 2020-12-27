@@ -6,13 +6,20 @@ div.login-component-wrapper {
 
     section#user-data {
         position: relative;
+        height: 180px;
         width: calc(200% + 36px);
         display: flex;
         justify-content: space-between;
         
         app-login-form, app-login-user-card {
             display: block;
+            position: absolute;
+            top: 0;
             width: 310px;
+        }
+
+        app-login-user-card {
+            left: 346px;
         }
     }
 }

@@ -15,12 +15,14 @@
         (@slide.start)="this.onStartEvent($event)">
 
         <app-login-form #userForm
+            *ngIf="this.showUserForm"
             [(value)]="this.loginPageService.selectedUser"
             (onValid)="btnDisabled = false"
             (onInvalid)="btnDisabled = true">
         </app-login-form>
-
+        
         <app-login-user-card #userCard
+            *ngIf="this.showUserCard"
             [value]="this.loginPageService.selectedUser"
             (onEditClick)="this.onEditClick()">
         </app-login-user-card>
@@ -31,7 +33,7 @@
         <tsr-button
             [disableRipple]="this.btnDisabled"
             [disabled]="this.btnDisabled"
-            (onDisabledClick)="this.loginForm.showErrors = true" 
+            (onDisabledClick)="this.userForm.showErrors = true" 
             (onClick)="this.onBtnClick()">
             {{this.btnText}}
         </tsr-button>

@@ -78,20 +78,28 @@ export class LoginComponentComponent {
 	public btnDisabled: boolean = false;
 
 	private isEditMode: boolean = false;
+
+	public showUserForm: boolean = false;
+	public showUserCard: boolean = true;
 	
 	constructor(public loginPageService: LoginPageService) {
 		this.userDataStep = (this.loginPageService.isSelectedUserStored) ? 'card' : 'form';
+		this.showUserCard = this.loginPageService.isSelectedUserStored;
+		this.showUserForm = !this.showUserCard;
 	}
 
 	public onSelect(user: User) {
+		this.btnDisabled = false;
+		this.showUserForm = false;
 		if (this.userDataStep != 'card') this.userDataStep = 'card';
 		this.loginPageService.selectedUser = user;
 	}
-
+	
 	public onDeselect() {
+		this.btnDisabled = true;
+		this.showUserCard = false;
 		if (this.userDataStep != 'form') this.userDataStep = 'form';
 		this.loginPageService.deselectUser();
-		console.log(this.userDataStep);
 		
 	}
 
@@ -108,34 +116,34 @@ export class LoginComponentComponent {
 	public onEditClick() {
 		this.isEditMode = true;
 		this.userDataStep = 'toForm';
-		this.userForm.editMode();
 	}
 
 	public onDoneEvent(event: AnimationEvent) {
 		if (event.toState == 'toForm') {
 			this.userDataStep = 'form';
-			this.toggleElementDisplay(event.element.children[1], 'hidden');
+			// this.toggleElementDisplay(event.element.children[1], 'hidden');
+			this.showUserCard = false;
 			this.btnText = BTN_MESSAGES.EDIT;
 		} 
 		if (event.toState == 'toCard') {
 			this.userDataStep = 'card';
-			this.toggleElementDisplay(event.element.children[0], 'hidden');
+			this.showUserForm = false;
 			this.btnText = BTN_MESSAGES.LOGIN;
 		} 
 	}
 	
 	public onStartEvent(event: AnimationEvent) {
 		if (event.toState == 'toCard') {
-			this.toggleElementDisplay(event.element.children[1], 'visible');
+			this.showUserCard = true;
 		}
 		if (event.toState == 'toForm') {
-			this.toggleElementDisplay(event.element.children[0], 'visible');
+			this.showUserForm = true;
 		}
 		if (event.toState == 'form') {
-			this.toggleElementDisplay(event.element.children[0], 'visible');
+			this.showUserForm = true;
 		}
 		if (event.toState == 'card') {
-			this.toggleElementDisplay(event.element.children[1], 'visible');
+			this.showUserCard = true;
 		}
 	}
 

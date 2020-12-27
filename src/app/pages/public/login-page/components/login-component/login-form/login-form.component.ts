@@ -35,11 +35,11 @@ export class LoginFormComponent {
 	showErrors: boolean = false;
 
 	get isEmailInvalid() {
-		return (this.email !== null && this.email.invalid && !this.email.untouched);
+		return ((this.email !== null && this.email.invalid && !this.email.untouched) || this.showErrors);
 	}
 
 	get isPasswordInvalid() {
-		return (this.password !== null && this.password.invalid && !this.password.untouched);
+		return ((this.password !== null && this.password.invalid && !this.password.untouched) ||this.showErrors);
 	}
 
 	get emailErrorMessage(): string {

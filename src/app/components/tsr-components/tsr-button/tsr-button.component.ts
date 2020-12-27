@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class TsrButtonComponent {
 
 	@Input() disabled: boolean = false;
+	@Input() disableRipple: boolean = false;
 	@Output() onDisabledClick = new EventEmitter<boolean>();
 	@Output() onClick = new EventEmitter<boolean>();
 

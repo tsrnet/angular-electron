@@ -1,13 +1,39 @@
 <div class="login-component-wrapper dark-theme">
-    <app-login-user-select #userSelect [data]="this.loginPageService.storedUsers"></app-login-user-select>
-    <section id="user-data">
-        <app-login-form #userForm></app-login-form>
-        <app-login-user-card #userCard></app-login-user-card>
+
+    <app-login-user-select #userSelect 
+        [data]="this.loginPageService.storedUsers"
+        [value]="this.loginPageService.selectedUser"
+        (onSelect)="this.onSelect($event)"
+        (onDeselect)="this.onDeselect()"
+        (onDelete)="this.loginPageService.deleteUser($event)"
+        (onOrderChanges)="this.loginPageService.moveItemInArray($event.toIndex, $event.fromIndex)">
+    </app-login-user-select>
+
+    <section id="user-data" 
+        [@slide]="this.userDataStep" 
+        (@slide.done)="this.onDoneEvent($event)"
+        (@slide.start)="this.onStartEvent($event)">
+
+        <app-login-form #userForm
+            [(value)]="this.loginPageService.selectedUser"
+            (onValid)="btnDisabled = false"
+            (onInvalid)="btnDisabled = true">
+        </app-login-form>
+
+        <app-login-user-card #userCard
+            [value]="this.loginPageService.selectedUser"
+            (onEditClick)="this.onEditClick()">
+        </app-login-user-card>
+        
     </section>
     <mat-divider></mat-divider>
     <div class="buttons">
-        <tsr-button matRipple [disabled]="!this.loginPageService.isUserValid"
-            [matRippleDisabled]="!this.loginPageService.isUserValid"
-            (onDisabledClick)="this.loginForm.showErrors = true" (onClick)="this.logIn()">Log in</tsr-button>
+        <tsr-button
+            [disableRipple]="this.btnDisabled"
+            [disabled]="this.btnDisabled"
+            (onDisabledClick)="this.loginForm.showErrors = true" 
+            (onClick)="this.onBtnClick()">
+            {{this.btnText}}
+        </tsr-button>
     </div>
 </div>

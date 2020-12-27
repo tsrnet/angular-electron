@@ -1,7 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { LoginPageService } from '../../../login-page.service';
-import { LoginFormComponent } from '../login-form/login-form.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { User } from '../../../../../../interfaces';
 
 @Component({
 	selector: 'app-login-user-card',
@@ -33,34 +32,30 @@ import { LoginFormComponent } from '../login-form/login-form.component';
 
 export class LoginUserCardComponent {
 
-	private _editUser: boolean = false;
-	
-	public _step: 'void'|'card'|'form';
-
-	public get step() {
-		return (this.loginPageService.isSelectedUserStored) ? ((this._editUser) ? 'form' : 'void-card') : 'void-form';
+	private _value: User = null;
+	@Input() set value(value: User) {
+		this._value = value;
 	}
-
-	@ViewChild('loginForm') loginForm: LoginFormComponent;
-	
-	constructor(public loginPageService: LoginPageService) {
+	get value(): User {
+		return this._value;
 	}
 	
-	public captureStartEvent(event: any) {
+	@Output() onEditClick: EventEmitter<void> = new EventEmitter<void>();
+	
+	constructor() {
+	}
+	
+	public onStartEvent(event: any) {
 		// if (event.toState === 'void-card') event.element.style.display = 'block';
 		// else if (event.fromState === 'open') event.element.style.pointerEvents = 'none';
 	}
 
-	public captureDoneEvent(event: any) {
-		// if (event.toState === 'void-card') event.element.style.display = 'none';
-		// else if (event.toState === 'open') event.element.style.pointerEvents = 'all';
-		// this.emptyList = this.loginPageService.storedUsersIsEmpty;
+	public onDoneEvent(event: any) {
+
 	}
 
-	public editUser() {
-		console.log(this._editUser);
-		
-		this._editUser = true;
+	public onEditClickEvent() {
+		this.onEditClick.emit();
 	}
 
 }

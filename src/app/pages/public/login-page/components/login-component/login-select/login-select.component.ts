@@ -2,9 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from './templates/dialog-confirm.component';
-import { ElectronService } from '../../../../../../services';
 import { User } from '../../../../../../interfaces';
-import { LoginPageService } from '../../../login-page.service';
+
+export interface ArrayOrder {
+	fromIndex: number;
+	toIndex: number;
+}
 
 @Component({
 	selector: 'app-login-user-select',
@@ -33,46 +36,62 @@ export class LoginSelectComponent {
 	@Input('data') users: User[] = [];
 	@Input() disabled: boolean = false;
 
-	@Input() value: User;
-	@Output() valueChange = new EventEmitter<User>();
+	private _value: User = null;
+	@Input() set value(value: User) {
+		this._value = value;
+	}
+	get value(): User {
+		return this._value;
+	}
 	
 	@Output() onDelete: EventEmitter<User> = new EventEmitter<User>();
+	@Output() onDeselect: EventEmitter<void> = new EventEmitter<void>();
+	@Output() onSelect: EventEmitter<User> = new EventEmitter<User>();
+	@Output() onOrderChanges: EventEmitter<ArrayOrder> = new EventEmitter<ArrayOrder>();
 	
 	//select functionality
+	public get existSelectedUser(): boolean {
+		return (this._value !== null);
+	}
 	public isOpen: boolean = false;
 	public emptyList: boolean = true;
 	
-	constructor(public loginPageService: LoginPageService, public dialog: MatDialog) {
+	constructor(public dialog: MatDialog) {
 	}
 	
-	public onClick(storedUser?: User) {
-		if (storedUser !== undefined) {
-			if (this.loginPageService.selectedUser.userId == storedUser.userId) this.loginPageService.deselectUser();
-			else this.loginPageService.selectedUser = storedUser;
-			this.emptyList = this.loginPageService.storedUsersIsEmpty;
+	public onClickEvent(user?: User) {
+		if (user !== null && user !== undefined) {
+			if (this._value?.userId == user.userId) this.onDeselect.emit();
+			else this.onSelect.emit(user);
+			this.emptyList = (this.users.length == 0);
 		}
 		this.isOpen = !this.isOpen;
 	}
 
-	public captureDoneEvent(event: any) {
-		if (event.toState === 'closed') event.element.style.display = 'none';
-		else if (event.toState === 'open') event.element.style.pointerEvents = 'all';
-		this.emptyList = this.loginPageService.storedUsersIsEmpty;
+	public onOrderChangesEvent(fromIndex: number, toIndex: number) {
+		this.onOrderChanges.emit({fromIndex: fromIndex, toIndex: toIndex});
 	}
 
-	public captureStartEvent(event: any) {
+	public onDeleteEvent(user: User) {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+		dialogRef.afterClosed().subscribe((result: boolean) => {
+			if (result) {
+				this.onDelete.emit(user);
+				if (this.users.length == 0) this.isOpen = false;
+			} 
+		});
+	}
+
+	public onDoneEvent(event: any) {
+		if (event.toState === 'closed') event.element.style.display = 'none';
+		else if (event.toState === 'open') event.element.style.pointerEvents = 'all';
+		this.emptyList = (this.users.length == 0);
+	}
+
+	public onStartEvent(event: any) {
 		if (event.fromState === 'closed') event.element.style.display = 'block';
 		else if (event.fromState === 'open') event.element.style.pointerEvents = 'none';
 	}
 
-	public deleteStoredUser(storedUser: User) {
-		const dialogRef = this.dialog.open(ConfirmDialog);
-		dialogRef.afterClosed().subscribe((result: boolean) => {
-			if (result) {
-				this.loginPageService.deleteUser(storedUser)
-				if (this.loginPageService.storedUsersIsEmpty) this.isOpen = false;
-			} 
-		});
-	}
 
 }

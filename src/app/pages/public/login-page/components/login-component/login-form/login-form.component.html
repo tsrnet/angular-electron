@@ -1,19 +1,19 @@
-<section id="user-form" class="dark-theme">
-    <div [ngClass]="{'input-label': true, 'input-error': ((!this.email.untouched || this.showErrors) && this.email.invalid)}">
+<section id="user-form" class="dark-theme" *ngIf="this.value !== null">
+    <div [ngClass]="{'input-label': true, 'input-error': this.isEmailInvalid}">
         <div class="label-field">
             <label for="email">electronic email</label>
             <span>{{this.emailErrorMessage}}</span>
         </div>
-        <input [(ngModel)]="this.selectedUser.email" (ngModelChange)="this.checkValidity()" type="text" [formControl]="email" aria-label="electronic email">
+        <input [(ngModel)]="this.value.email" (ngModelChange)="this.checkValidity()" type="text" [formControl]="email" aria-label="electronic email">
     </div>
 
-    <div [ngClass]="{'input-label': true, 'input-error': ((!this.password.untouched || this.showErrors) && this.password.invalid)}">
+    <div [ngClass]="{'input-label': true, 'input-error': this.isPasswordInvalid}">
         <div class="label-field">
             <label for="password">password</label>
             <span>{{this.passwordErrorMessage}}</span>
         </div>
         <div class="input-suffix">
-            <input [(ngModel)]="this.selectedUser.password" (ngModelChange)="this.checkValidity()" [type]="this.showPassword ? 'text' : 'password'" name="password" aria-label="password" [formControl]="password">
+            <input [(ngModel)]="this.value.password" (ngModelChange)="this.checkValidity()" [type]="this.showPassword ? 'text' : 'password'" name="password" aria-label="password" [formControl]="password">
             <mat-icon (click)="this.togglePasswordVisibility()">{{this.showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </div>
     </div>

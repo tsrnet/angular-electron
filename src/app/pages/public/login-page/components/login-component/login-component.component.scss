@@ -6,7 +6,7 @@ div.login-component-wrapper {
 
     section#user-data {
         position: relative;
-        width: 215%;
+        width: calc(200% + 36px);
         display: flex;
         justify-content: space-between;
         

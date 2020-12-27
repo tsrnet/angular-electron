@@ -1,8 +1,8 @@
 <section id="login-stored-users-select" class="dark-theme">
-    <div matRipple id="select-box" (click)="this.onClick()">
-        <div class="select-value" *ngIf="this.loginPageService.isSelectedUserStored; else noSelectedUser">
-            <img class="select-value-avatar" [src]="this.loginPageService.selectedUser.getAvatar()" alt="selected-user-avatar">
-            <span class="select-value-name">{{this.loginPageService.selectedUser.getFullName()}}</span>
+    <div matRipple id="select-box" (click)="this.onClickEvent()">
+        <div class="select-value" *ngIf="this.existSelectedUser; else noSelectedUser">
+            <img class="select-value-avatar" [src]="this.value.getAvatar()" alt="selected-user-avatar">
+            <span class="select-value-name">{{this.value.getFullName()}}</span>
         </div>
         <ng-template #noSelectedUser>
             <span class="select-value-placeholder">Select stored user</span>
@@ -10,19 +10,19 @@
         <mat-icon [ngClass]="{'select-icon': true, 'select-icon-active': this.isOpen}">arrow_drop_up</mat-icon>
     </div>
 
-    <div class="select-list-wrapper" [@openClose]="isOpen ? 'open' : 'closed'" (@openClose.done)="this.captureDoneEvent($event)" (@openClose.start)="this.captureStartEvent($event)">
-        <ul id="select-list" cdkDropList (cdkDropListDropped)="this.loginPageService.moveItemInArray($event.previousIndex, $event.currentIndex)">
+    <div class="select-list-wrapper" [@openClose]="isOpen ? 'open' : 'closed'" (@openClose.done)="this.onDoneEvent($event)" (@openClose.start)="this.onStartEvent($event)">
+        <ul id="select-list" cdkDropList (cdkDropListDropped)="this.onOrderChangesEvent($event.previousIndex, $event.currentIndex)">
             <ng-container *ngIf="!this.emptyList; else noStoredUsers">
-                <ng-container *ngFor="let storedUser of this.loginPageService.storedUsers; let i = index">
+                <ng-container *ngFor="let storedUser of this.users; let i = index">
                     <div class="select-list-item-wrapper" cdkDrag cdkDragBoundary="#select-list">
-                        <li matRipple [ngClass]="{'select-list-item': true, 'active': storedUser.userId === this.loginPageService.selectedUser?.userId}" (click)="this.onClick(storedUser)">
+                        <li matRipple [ngClass]="{'select-list-item': true, 'active': storedUser.userId === this.value?.userId}" (click)="this.onClickEvent(storedUser)">
                             <img class="list-item-avatar" [src]="storedUser.getAvatar()" alt="list-item-user-avatar">
                             <div class="list-item-info">
                                 <span class="list-item-name">{{storedUser.getFullName()}}</span>
                                 <span class="list-item-email">{{storedUser.email}}</span>
                             </div>
                         </li>
-                        <button matRipple class="list-item-remove" (click)="this.deleteStoredUser(storedUser)"><mat-icon>delete</mat-icon></button>
+                        <button matRipple class="list-item-remove" (click)="this.onDeleteEvent(storedUser)"><mat-icon>delete</mat-icon></button>
                     </div>
                     <mat-divider></mat-divider>
                 </ng-container>
@@ -32,5 +32,5 @@
             </ng-template>
         </ul>
     </div>
-    <div matRipple [ngClass]="{'backdrop': true, 'backdrop-active': this.isOpen}" (click)="this.onClick()"></div>
+    <div matRipple [ngClass]="{'backdrop': true, 'backdrop-active': this.isOpen}" (click)="this.onClickEvent()"></div>
 </section>

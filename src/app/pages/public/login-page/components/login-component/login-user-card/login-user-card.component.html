@@ -1,16 +1,16 @@
-<div class="wrapper dark-theme">
-    <section id="login-user-card" [@slide]="this.step" (@slide.done)="this.captureDoneEvent($event)" (@slide.start)="this.captureStartEvent($event)">
+<div class="wrapper dark-theme" *ngIf="this.value !== null">
+    <section id="login-user-card">
         <div class="user-card">
             <div class="user-card-body">
-                <button matRipple class="user-card-edit" (click)="this.editUser()"><mat-icon>edit</mat-icon></button>
-                <img class="user-card-avatar" [src]="this.loginPageService.selectedUser.getAvatar()" alt="user-card-avatar">
+                <button matRipple class="user-card-edit" (click)="this.onEditClickEvent()"><mat-icon>edit</mat-icon></button>
+                <img class="user-card-avatar" [src]="this.value.getAvatar()" alt="user-card-avatar">
                 <div class="user-card-info">
-                    <span class="user-name">{{this.loginPageService.selectedUser.userName}}</span>
-                    <span class="user-email">{{this.loginPageService.selectedUser.email}}</span>
+                    <span class="user-name">{{this.value.userName}}</span>
+                    <span class="user-email">{{this.value.email}}</span>
                 </div>
             </div>
             <div class="user-card-footer">
-                <span>Last session: {{this.loginPageService.selectedUser.getLastSession('unknown')}}</span>
+                <span>Last session: {{this.value.getLastSession('unknown')}}</span>
             </div>
         </div>
     </section>

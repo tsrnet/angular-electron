@@ -11,7 +11,7 @@ export class LoginFormComponent {
 
 	//data
 	private _value: User = null;
-	private _temporalValue: User = User.NewEmpty();
+	private _temporalValue: User = User.New();
 
 	@Output() valueChange = new EventEmitter<User>();
 	@Input() set value(value: User) {

@@ -21,11 +21,11 @@ export class User {
     avatar?: string;
     lastSession?: string;
 
-    public static New(userObject: UserObject|User): User {
+    public static Map(userObject: UserObject|User): User {
         return new this().map(userObject);
     }
 
-    public static NewEmpty(): User {
+    public static New(): User {
         return new this();
     }
 
@@ -35,10 +35,10 @@ export class User {
     private map(userObject: UserObject|User) {
         this.userId = userObject.userId;
         this.providerId = userObject.providerId;
-        this.email = userObject.email.trim();
-        this.password = userObject.password.trim();
-        this.userName = userObject.userName.trim();
-        this.firstName = userObject.firstName.trim();
+        this.email = userObject.email?.trim();
+        this.password = userObject.password?.trim();
+        this.userName = userObject.userName?.trim();
+        this.firstName = userObject.firstName?.trim();
         this.lastName = userObject.lastName?.trim()??null;
         this.avatar = userObject.avatar?.trim()??null;
         this.lastSession = userObject.lastSession?.trim()??null;
@@ -52,12 +52,14 @@ export class User {
     }
 
     public getFullName(): string {
+        if (this.firstName == undefined) return '';
         let fullName = this.firstName.trimRight();
         if (this.lastName) fullName += ' ' + this.lastName.trimLeft();
         return fullName;
     }
-
+    
     public getLastSession(fallBack?: string): string {
+        if (this.lastSession == undefined) return '';
         let lastSession = (this.lastSession) ? this.lastSession.trim() : ((fallBack) ? fallBack : '');
         return lastSession;
     }

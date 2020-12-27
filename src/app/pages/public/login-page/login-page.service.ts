@@ -38,12 +38,12 @@ export class LoginPageService {
     }
 
 	constructor(private _authService: AuthService, private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
-        // this._userStore.getAll().then((users) => {
-		// 	users.forEach((user: User) => {                
-		// 		this._userLocalStorage.store(user);
-        //     })
-		// })
-        this._selectedUser = (this._userLocalStorage.existSelectedUser) ? this._userLocalStorage.selectedUser : User.NewEmpty();
+        this._userStore.getAll().then((users) => {
+			users.forEach((user: User) => {                
+				this._userLocalStorage.store(user);
+            })
+		})
+        this._selectedUser = (this._userLocalStorage.existSelectedUser) ? this._userLocalStorage.selectedUser : User.New();
         this.isUserValid = this.isSelectedUserStored;
     }
 
@@ -56,8 +56,7 @@ export class LoginPageService {
     }
 
     public deselectUser() {
-        this._selectedUser = User.NewEmpty();
-        this.isUserValid = false;
+        this._selectedUser = User.New();
         this._userLocalStorage.deletePreselectedUser();
     }
 

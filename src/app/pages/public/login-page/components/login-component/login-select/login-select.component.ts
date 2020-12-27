@@ -51,7 +51,7 @@ export class LoginSelectComponent {
 	
 	//select functionality
 	public get existSelectedUser(): boolean {
-		return (this._value !== null);
+		return (this._value !== null && this._value.userId !== undefined);
 	}
 	public isOpen: boolean = false;
 	public emptyList: boolean = true;

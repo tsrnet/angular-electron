@@ -4,8 +4,7 @@
 
 module.exports = (config, options) => {
     config.target = 'electron-renderer';
-
-
+    
     if (options.fileReplacements) {
         for(let fileReplacement of options.fileReplacements) {
             if (fileReplacement.replace !== 'src/environments/environment.ts') {
@@ -22,3 +21,9 @@ module.exports = (config, options) => {
 
     return config;
 }
+
+// module.exports = {
+//     externals: {
+//         'sqlite3':'commonjs sqlite3'
+//     }
+// };

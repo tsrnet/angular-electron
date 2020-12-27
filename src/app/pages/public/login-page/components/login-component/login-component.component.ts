@@ -90,7 +90,9 @@ export class LoginComponentComponent {
 
 	public onDeselect() {
 		if (this.userDataStep != 'form') this.userDataStep = 'form';
-		this.loginPageService.selectedUser = null;
+		this.loginPageService.deselectUser();
+		console.log(this.userDataStep);
+		
 	}
 
 	public onBtnClick() {
@@ -111,10 +113,12 @@ export class LoginComponentComponent {
 
 	public onDoneEvent(event: AnimationEvent) {
 		if (event.toState == 'toForm') {
+			this.userDataStep = 'form';
 			this.toggleElementDisplay(event.element.children[1], 'hidden');
 			this.btnText = BTN_MESSAGES.EDIT;
 		} 
 		if (event.toState == 'toCard') {
+			this.userDataStep = 'card';
 			this.toggleElementDisplay(event.element.children[0], 'hidden');
 			this.btnText = BTN_MESSAGES.LOGIN;
 		} 
@@ -126,6 +130,12 @@ export class LoginComponentComponent {
 		}
 		if (event.toState == 'toForm') {
 			this.toggleElementDisplay(event.element.children[0], 'visible');
+		}
+		if (event.toState == 'form') {
+			this.toggleElementDisplay(event.element.children[0], 'visible');
+		}
+		if (event.toState == 'card') {
+			this.toggleElementDisplay(event.element.children[1], 'visible');
 		}
 	}
 

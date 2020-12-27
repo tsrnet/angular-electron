@@ -151,7 +151,7 @@ export class UserLocalStorageService {
         
         if (rawStoredUsers !== null) {
             storedUsers.id = this.generateID(rawStoredUsers.id);
-            rawStoredUsers.data.forEach(((user: User) => storedUsers.data.push(User.New(user))));
+            rawStoredUsers.data.forEach(((user: User) => storedUsers.data.push(User.Map(user))));
             storedUsers.selectedUserId = rawStoredUsers.selectedUserId;
         }
         return storedUsers;

@@ -20,7 +20,7 @@ export class LoginPageComponent {
 	constructor(public loginPageService: LoginPageService, private _snackBar: MatSnackBar) { }
 
 	onClick() {
-		if (!this.loginPageService.isUserValid) this.userCard.loginForm.showErrors = true;
+		// if (!this.loginPageService.isUserValid) this.userCard.loginForm.showErrors = true;
 	}
 
 	logIn() {
@@ -35,7 +35,7 @@ export class LoginPageComponent {
 			(err: AuthError) => {
 				this.showSpinner = false;
 				this.openSnackBar(err.message, 'OK');
-				if (err.code == AuthErrorCodes.WRONG_PASSWORD) this.userCard.loginForm.editUserPassword();
+				// if (err.code == AuthErrorCodes.WRONG_PASSWORD) this.userCard.loginForm.editUserPassword();
 			}
 		)
 	}

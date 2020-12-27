@@ -64,7 +64,6 @@ export class UserLocalStorageService {
      */
     public store(user: User, selected: boolean = false): void {        
         this._storedUsersCtrl.data[this.indexFor(user)] = user;
-        console.log(user, this.indexFor(user));
         if (selected) this.selectedUserId = user.userId;
         this.updateLocalStorage();
     }

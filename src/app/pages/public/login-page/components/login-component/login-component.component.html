@@ -5,8 +5,8 @@
         [value]="this.loginPageService.selectedUser"
         (onSelect)="this.onSelect($event)"
         (onDeselect)="this.onDeselect()"
-        (onDelete)="this.loginPageService.deleteUser($event)"
-        (onOrderChanges)="this.loginPageService.moveItemInArray($event.toIndex, $event.fromIndex)">
+        (onDelete)="this.onDelete($event)"
+        (onOrderChanges)="this.loginPageService.moveItemInArray($event)">
     </app-login-user-select>
 
     <section id="user-data" 

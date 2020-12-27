@@ -84,23 +84,32 @@ export class LoginComponentComponent {
 	
 	constructor(public loginPageService: LoginPageService) {
 		this.userDataStep = (this.loginPageService.isSelectedUserStored) ? 'card' : 'form';
-		this.showUserCard = this.loginPageService.isSelectedUserStored;
-		this.showUserForm = !this.showUserCard;
+		this.showUserForm = this.loginPageService.isSelectedUserStored;
+		this.showUserCard = !this.showUserForm;
 	}
 
 	public onSelect(user: User) {
 		this.btnDisabled = false;
 		this.showUserForm = false;
+		this.showUserCard = true; 
 		if (this.userDataStep != 'card') this.userDataStep = 'card';
 		this.loginPageService.selectedUser = user;
 	}
-	
+
 	public onDeselect() {
 		this.btnDisabled = true;
+		this.showUserForm = true;
 		this.showUserCard = false;
 		if (this.userDataStep != 'form') this.userDataStep = 'form';
 		this.loginPageService.deselectUser();
-		
+	}
+
+	public onDelete(user: User) {
+		this.btnDisabled = true;
+		this.showUserForm = true;
+		this.showUserCard = false;
+		if (this.userDataStep != 'form') this.userDataStep = 'form';
+		this.loginPageService.deleteUser(user);
 	}
 
 	public onBtnClick() {
@@ -121,7 +130,6 @@ export class LoginComponentComponent {
 	public onDoneEvent(event: AnimationEvent) {
 		if (event.toState == 'toForm') {
 			this.userDataStep = 'form';
-			// this.toggleElementDisplay(event.element.children[1], 'hidden');
 			this.showUserCard = false;
 			this.btnText = BTN_MESSAGES.EDIT;
 		} 
@@ -131,24 +139,13 @@ export class LoginComponentComponent {
 			this.btnText = BTN_MESSAGES.LOGIN;
 		} 
 	}
-	
+
 	public onStartEvent(event: AnimationEvent) {
-		if (event.toState == 'toCard') {
+		if (event.toState == 'toCard' || event.toState == 'card') {
 			this.showUserCard = true;
 		}
-		if (event.toState == 'toForm') {
+		if (event.toState == 'toForm' || event.toState == 'form') {
 			this.showUserForm = true;
 		}
-		if (event.toState == 'form') {
-			this.showUserForm = true;
-		}
-		if (event.toState == 'card') {
-			this.showUserCard = true;
-		}
 	}
-
-	private toggleElementDisplay(element: HTMLElement, visibility: string = 'visible') {
-		 element.style.visibility = visibility;
-	}
-
 }

@@ -61,6 +61,7 @@ export class LoginFormComponent {
 			if (this._value !== null) {
 				this.email.markAsUntouched();
 				this.password.markAsUntouched();
+				if (this._value.userId == undefined) this.onInvalid.emit();
 				clearInterval(id);
 			}
 		}, 50);

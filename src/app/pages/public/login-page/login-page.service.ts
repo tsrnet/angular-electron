@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../../interfaces';
 import { AuthError, AuthErrorCodes, AuthService, UserLocalStorageService, UserStoreService } from '../../../services';
+import { ArrayOrder } from './components/login-component/login-select/login-select.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,21 +39,22 @@ export class LoginPageService {
     }
 
 	constructor(private _authService: AuthService, private _userStore: UserStoreService, private _userLocalStorage: UserLocalStorageService) {
-        this._userStore.getAll().then((users) => {
-			users.forEach((user: User) => {                
-				this._userLocalStorage.store(user);
-            })
-		})
+        // this._userStore.getAll().then((users) => {
+		// 	users.forEach((user: User) => {                
+		// 		this._userLocalStorage.store(user);
+        //     })
+		// })
         this._selectedUser = (this._userLocalStorage.existSelectedUser) ? this._userLocalStorage.selectedUser : User.New();
         this.isUserValid = this.isSelectedUserStored;
     }
 
     public deleteUser(storedUser: User): boolean {
+        this._selectedUser = User.New();
         return this._userLocalStorage.delete(storedUser);
     }
 
-    public moveItemInArray(old_index: number, new_index: number): void {
-        this._userLocalStorage.moveItemInArray(old_index, new_index);
+    public moveItemInArray(arrayOrder: ArrayOrder): void {
+        this._userLocalStorage.moveItemInArray(arrayOrder.fromIndex, arrayOrder.toIndex);
     }
 
     public deselectUser() {
